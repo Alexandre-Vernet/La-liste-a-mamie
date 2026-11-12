@@ -14,7 +14,7 @@ et une installation en PWA.
 
 - **Liste de courses** : ajouter un article (avec quantité), le cocher, le renommer
   (double-clic), ajuster sa quantité, filtrer (tout / à acheter / acheté), vider les
-  articles achetés.
+  articles achetés. Les articles cochés descendent automatiquement en bas de liste.
 - **Anti-doublon** : impossible d'ajouter deux fois le même article.
 - **Auto-complétion** : en tapant, l'app suggère des produits à partir d'un
   dictionnaire de 491 produits courants.
@@ -27,8 +27,9 @@ et une installation en PWA.
 - **PWA installable**, fonctionne hors-ligne, icône et manifeste dédiés.
 - **Responsive** : utilisable du petit téléphone au grand écran, menu de
   navigation mobile en bas d'écran.
-- Thème clair/sombre automatique, animations et transitions soignées
-  (respectueuses de `prefers-reduced-motion`).
+- **Thème clair/sombre** : suit le système par défaut, ou se force manuellement via
+  le bouton en haut à droite (clair / sombre / auto), préférence mémorisée.
+- Animations et transitions soignées, respectueuses de `prefers-reduced-motion`.
 
 <p align="center">
   <img src="docs/screenshots/catalog-search.png" width="260" alt="Recherche dans le catalogue de produits" />

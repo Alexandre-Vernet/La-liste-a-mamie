@@ -59,6 +59,22 @@ describe('GroceryListPage', () => {
     expect(service.total()).toBe(0);
   });
 
+  it('should move checked items to the bottom while keeping others in order', () => {
+    const service = TestBed.inject(GroceryService);
+    service.add('Pain');
+    service.add('Lait');
+    service.add('Pommes');
+
+    const [pommes, lait] = service.visible();
+    service.toggle(lait.id);
+
+    const names = service.visible().map((item) => item.name);
+    expect(names).toEqual(['Pommes', 'Pain', 'Lait']);
+
+    service.toggle(pommes.id);
+    expect(service.visible().map((item) => item.name)).toEqual(['Pain', 'Pommes', 'Lait']);
+  });
+
   it('should suggest "beurre" when typing "beu" and add it on click', async () => {
     const fixture = TestBed.createComponent(GroceryListPage);
     await fixture.whenStable();

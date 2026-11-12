@@ -5,9 +5,19 @@
     <title>La liste à mamie</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f3ee" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141311" />
+    <meta name="theme-color" content="#f6f3ee" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script>
+      // Applique le thème avant le premier rendu pour éviter un flash du mauvais thème.
+      // La clé 'theme-preference' doit rester synchronisée avec ThemeService.
+      (function () {
+        var stored = localStorage.getItem('theme-preference');
+        var dark =
+          stored === 'dark' ||
+          (stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
     <link

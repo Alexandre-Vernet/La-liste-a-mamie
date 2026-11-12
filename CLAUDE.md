@@ -22,6 +22,10 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
   du catalogue groupés par catégorie, à ajouter à la liste en un clic. Route `/produits`.
 - `src/app/bottom-nav/` — menu de navigation fixé en bas d'écran (style mobile),
   pour passer d'une page à l'autre.
+- `src/app/theme/theme.service.ts` — préférence de thème (`system`/`light`/`dark`),
+  persistée dans `localStorage`, applique l'attribut `data-theme` sur `<html>`.
+- `src/app/theme-toggle/` — bouton flottant (icône soleil/lune/auto) qui fait
+  tourner la préférence de thème. Affiché dans la coquille `App`, pas par page.
 - `src/app/app.ts` / `app.html` / `app.scss` — coquille de l'app : `<router-outlet>`
   + menu du bas. Ne contient aucune logique métier.
 - `src/app/app.routes.ts` — déclaration des routes (une page = un composant).
@@ -69,6 +73,12 @@ Toujours lancer `npm test` (et idéalement `npm run build`) après une modificat
   d'annuler (snackbar « Annuler » quelques secondes), jamais une suppression silencieuse
   et définitive. Voir `removeGrocery`/`undoRemove` dans `grocery-list-page.ts` et
   `GroceryService.restore()` comme patron à suivre pour toute nouvelle suppression.
+- Thème sombre : piloté entièrement par l'attribut `data-theme` sur `<html>`
+  (`ThemeService`), pas par `@media (prefers-color-scheme)` dans le SCSS — ce media
+  query ne doit **pas** être réintroduit dans `styles.scss`, il empêcherait de forcer
+  un thème indépendamment du système. Le petit script inline de `index.html` applique
+  le thème avant le premier rendu (évite un flash) ; sa clé `localStorage` doit rester
+  synchronisée avec `ThemeService`.
 
 ## Responsive
 

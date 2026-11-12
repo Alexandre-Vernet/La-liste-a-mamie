@@ -18,7 +18,7 @@ export class GroceryService {
       case 'done':
         return items.filter((i) => i.done);
       default:
-        return items;
+        return this.sortByDone(items);
     }
   });
 
@@ -101,6 +101,10 @@ export class GroceryService {
 
   contains(name: string): boolean {
     return this.hasName(name.trim());
+  }
+
+  private sortByDone(items: Grocery[]): Grocery[] {
+    return [...items].sort((a, b) => Number(a.done) - Number(b.done));
   }
 
   private patch(id: string, change: (item: Grocery) => Grocery): void {
