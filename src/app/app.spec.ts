@@ -11,7 +11,7 @@ describe('App', () => {
   it('should render the title', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
-    expect(fixture.nativeElement.querySelector('h1')?.textContent).toContain('Ma liste de courses');
+    expect(fixture.nativeElement.querySelector('h1')?.textContent).toContain('La liste à mamie');
   });
 
   it('should add, toggle, filter and clear groceries', () => {

@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "test-claude": {
+    "la-liste-a-mamie": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -60,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "test-claude:build:production"
+              "buildTarget": "la-liste-a-mamie:build:production"
             },
             "development": {
-              "buildTarget": "test-claude:build:development"
+              "buildTarget": "la-liste-a-mamie:build:development"
             }
           },
           "defaultConfiguration": "development"

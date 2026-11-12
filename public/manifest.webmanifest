@@ -1,6 +1,6 @@
 {
-  "name": "Ma liste de courses",
-  "short_name": "Courses",
+  "name": "La liste à mamie",
+  "short_name": "Liste à mamie",
   "description": "Liste de courses avec quantités, filtres et auto-complétion des produits.",
   "lang": "fr",
   "display": "standalone",

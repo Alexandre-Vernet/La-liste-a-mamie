@@ -4,7 +4,7 @@ Ce fichier donne le contexte et les règles à suivre pour travailler sur ce pro
 
 ## Le projet
 
-Application Angular de liste de courses : on ajoute des articles (avec une quantité),
+« La liste à mamie » est une application Angular de liste de courses : on ajoute des articles (avec une quantité),
 on les coche quand ils sont achetés, on peut les renommer, en changer la quantité,
 filtrer la liste et vider les articles achetés. Les données sont persistées dans le
 `localStorage` du navigateur.
@@ -80,10 +80,10 @@ L'application est installable et fonctionne hors-ligne grâce à
   par un `assetGroups` existant ou en ajouter un.
 - `src/app/app.config.ts` : `provideServiceWorker('ngsw-worker.js', { enabled: !isDevMode(), ... })`
   — le service worker est **désactivé en dev**. `ng serve` ne l'active jamais : pour
-  le tester, faire `npm run build` puis servir le dossier `dist/test-claude/browser`
-  (ex. `npx http-server dist/test-claude/browser`).
+  le tester, faire `npm run build` puis servir le dossier `dist/la-liste-a-mamie/browser`
+  (ex. `npx http-server dist/la-liste-a-mamie/browser`).
 - Après tout changement touchant la PWA, vérifier que `ng build` produit bien
-  `manifest.webmanifest` et `ngsw-worker.js` dans `dist/test-claude/browser`.
+  `manifest.webmanifest` et `ngsw-worker.js` dans `dist/la-liste-a-mamie/browser`.
 
 ## Règles de base TypeScript
 
