@@ -1,59 +1,62 @@
-# TestClaude
+# La liste à mamie 🧺
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.1.
+Une application de liste de courses simple, rapide et agréable à utiliser — avec
+quantités, suggestions de produits, un catalogue de 491 produits classés par rayon,
+et une installation en PWA.
 
-## Development server
+<p align="center">
+  <img src="docs/screenshots/list-light.png" width="260" alt="Liste de courses, thème clair" />
+  <img src="docs/screenshots/list-dark.png" width="260" alt="Liste de courses, thème sombre" />
+  <img src="docs/screenshots/catalog-light.png" width="260" alt="Catalogue de produits par rayon" />
+</p>
 
-To start a local development server, run:
+## Fonctionnalités
 
-```bash
-ng serve
-```
+- **Liste de courses** : ajouter un article (avec quantité), le cocher, le renommer
+  (double-clic), ajuster sa quantité, filtrer (tout / à acheter / acheté), vider les
+  articles achetés.
+- **Anti-doublon** : impossible d'ajouter deux fois le même article.
+- **Auto-complétion** : en tapant, l'app suggère des produits à partir d'un
+  dictionnaire de 491 produits courants.
+- **Catalogue par rayon** (page « Produits ») : tous les produits groupés par
+  catégorie (fruits & légumes, crémerie, boulangerie, viandes & poissons, épicerie
+  salée/sucrée, boissons, surgelés, hygiène…), avec recherche en direct et
+  navigation rapide par rayon.
+- **Annulation de suppression** : supprimer un article affiche un bandeau
+  « Annuler » pendant quelques secondes.
+- **PWA installable**, fonctionne hors-ligne, icône et manifeste dédiés.
+- **Responsive** : utilisable du petit téléphone au grand écran, menu de
+  navigation mobile en bas d'écran.
+- Thème clair/sombre automatique, animations et transitions soignées
+  (respectueuses de `prefers-reduced-motion`).
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+<p align="center">
+  <img src="docs/screenshots/catalog-search.png" width="260" alt="Recherche dans le catalogue de produits" />
+</p>
 
-## Code scaffolding
+## Stack technique
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- [Angular 22](https://angular.dev) — composants standalone, signaux, zoneless
+- [Vitest](https://vitest.dev) pour les tests unitaires
+- Service worker (`@angular/service-worker`) pour le support PWA
+- SCSS, sans framework CSS
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## Démarrer le projet
 
 ```bash
-ng e2e
+npm install
+npm start          # lance l'app en local sur http://localhost:4200
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Autres commandes utiles :
 
-## Additional Resources
+```bash
+npm test           # tests unitaires (Vitest)
+npm run build      # build de production (dist/la-liste-a-mamie)
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Contribuer
+
+Les règles de code et l'architecture du projet sont décrites dans
+[`CLAUDE.md`](./CLAUDE.md) (organisation des pages, conventions TypeScript/Angular,
+règles d'accessibilité et d'UX à respecter).
