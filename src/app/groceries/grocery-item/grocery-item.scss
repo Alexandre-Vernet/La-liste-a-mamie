@@ -1,0 +1,188 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  max-height: 5rem;
+  padding: 1rem 0.25rem;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  animation: enter 0.25s ease-out;
+  transition:
+    max-height 0.22s ease,
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    padding 0.22s ease,
+    border-color 0.22s ease;
+}
+
+:host(.leaving) {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  transform: translateX(12px) scale(0.97);
+  border-color: transparent;
+}
+
+.check {
+  position: relative;
+  display: grid;
+  flex-shrink: 0;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    opacity: 0;
+  }
+}
+
+.box {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1.5px solid var(--muted);
+  border-radius: 50%;
+  transition: all 0.2s ease;
+
+  input:checked + & {
+    border-color: var(--accent);
+    background: var(--accent)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / 70% no-repeat;
+    animation: pop 0.25s ease;
+  }
+
+  input:focus-visible + & {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+.name,
+.editor {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.name {
+  overflow-wrap: anywhere;
+  cursor: text;
+  transition: color 0.2s ease;
+
+  :host(.done) & {
+    color: var(--muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--accent);
+  }
+}
+
+.editor {
+  padding: 0;
+  border: none;
+  border-bottom: 1px solid var(--accent);
+  background: none;
+  outline: none;
+}
+
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+
+  :host(.done) & {
+    opacity: 0.45;
+  }
+}
+
+.step {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  &:active {
+    transform: scale(0.85);
+  }
+}
+
+.qty-value {
+  min-width: 1.1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.remove {
+  display: grid;
+  flex-shrink: 0;
+  padding: 0.35rem;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+
+  :host(:hover) &,
+  &:focus-visible {
+    opacity: 1;
+  }
+
+  &:hover {
+    color: var(--danger);
+    background: var(--surface-hover);
+  }
+}
+
+@media (hover: none) {
+  .remove {
+    opacity: 1;
+  }
+
+  .box {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .step {
+    width: 1.875rem;
+    height: 1.875rem;
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.75);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

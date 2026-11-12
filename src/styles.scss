@@ -1,1 +1,62 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+  --bg: #f6f3ee;
+  --surface: #fffdf9;
+  --surface-hover: #f1ece4;
+  --ink: #1f1d1a;
+  --muted: #8f877c;
+  --line: #e8e2d8;
+  --accent: #a0673f;
+  --accent-soft: #f3e8de;
+  --danger: #b4483c;
+  --shadow: 0 1px 2px rgb(60 40 20 / 0.04), 0 12px 40px -12px rgb(60 40 20 / 0.12);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141311;
+    --surface: #1c1b18;
+    --surface-hover: #26241f;
+    --ink: #ede8e0;
+    --muted: #8a8378;
+    --line: #2e2b26;
+    --accent: #d39a6a;
+    --accent-soft: #2e2419;
+    --danger: #e07a6c;
+    --shadow: 0 12px 40px -12px rgb(0 0 0 / 0.5);
+
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
