@@ -12,11 +12,22 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
 - `src/app/groceries/grocery.model.ts` — modèle `Grocery` et type `Filter`.
 - `src/app/groceries/grocery.service.ts` — état de la liste (signaux + `computed`),
   toute la logique métier (ajout, suppression, anti-doublon, quantités, filtres).
-- `src/app/groceries/grocery-dictionary.ts` — dictionnaire de produits courants et
+- `src/app/groceries/grocery-dictionary.ts` — catalogue de produits courants
+  (`GROCERY_CATEGORIES`), dictionnaire à plat dérivé (`GROCERY_DICTIONARY`) et
   fonction pure de suggestion (auto-complétion de l'ajout).
-- `src/app/groceries/grocery-item/` — composant d'affichage d'un article.
-- `src/app/app.ts` / `app.html` / `app.scss` — composant racine (formulaire d'ajout,
-  suggestions, filtres, résumé, confettis).
+- `src/app/groceries/grocery-item/` — composant d'affichage d'un article de la liste.
+- `src/app/groceries/grocery-list-page/` — page « Ma liste » (formulaire d'ajout,
+  suggestions, filtres, résumé, confettis). Route `/`.
+- `src/app/groceries/grocery-catalog-page/` — page « Produits » : tous les produits
+  du catalogue groupés par catégorie, à ajouter à la liste en un clic. Route `/produits`.
+- `src/app/bottom-nav/` — menu de navigation fixé en bas d'écran (style mobile),
+  pour passer d'une page à l'autre.
+- `src/app/app.ts` / `app.html` / `app.scss` — coquille de l'app : `<router-outlet>`
+  + menu du bas. Ne contient aucune logique métier.
+- `src/app/app.routes.ts` — déclaration des routes (une page = un composant).
+- `src/styles.scss` — variables de thème **et** classes partagées entre pages
+  (`.page`, `.card`, `h1`, `.date`, `.summary`, `.hint`) : évite de dupliquer ces
+  styles dans chaque page.
 - `public/manifest.webmanifest`, `public/icons/` — manifeste et icônes de la PWA.
 - `ngsw-config.json` — configuration du service worker (fichiers mis en cache).
 
@@ -40,6 +51,24 @@ Toujours lancer `npm test` (et idéalement `npm run build`) après une modificat
 - Formatage via Prettier (voir `.prettierrc`) — ne pas reformater à la main.
 - **PWA** : service worker (`@angular/service-worker`) + manifeste installable.
   Voir la section [PWA](#pwa) plus bas.
+- Navigation en transitions douces : `provideRouter(routes, withViewTransitions())`
+  dans `app.config.ts` (View Transitions API du navigateur, aucun code de
+  transition à maintenir à la main).
+
+## UX et animations
+
+- Toute animation/transition doit respecter `prefers-reduced-motion` : le filet de
+  sécurité global est dans `src/styles.scss` (coupe les animations/transitions pour
+  les utilisateurs qui ont désactivé les animations) — pas besoin de le refaire
+  composant par composant, mais ne pas contourner ce filet avec `!important` ailleurs.
+- Les boutons/éléments interactifs ont un retour tactile cohérent au clic
+  (`:active { transform: scale(...) }`), avec un easing `cubic-bezier(0.22, 1, 0.36, 1)`
+  plutôt que `ease` pour les transitions qui doivent sembler « fluides » (suggestions,
+  puces de produits, onglets du menu).
+- Suppression destructive (supprimer un article) : toujours accompagnée d'un moyen
+  d'annuler (snackbar « Annuler » quelques secondes), jamais une suppression silencieuse
+  et définitive. Voir `removeGrocery`/`undoRemove` dans `grocery-list-page.ts` et
+  `GroceryService.restore()` comme patron à suivre pour toute nouvelle suppression.
 
 ## Responsive
 
@@ -164,6 +193,18 @@ L'application est installable et fonctionne hors-ligne grâce à
 - Des noms explicites plutôt que des commentaires : un commentaire n'est utile que pour
   expliquer un *pourquoi* non évident (contrainte cachée, contournement), jamais pour
   répéter ce que le code dit déjà.
+
+### Pages et navigation
+
+- Chaque route pointe vers un composant « page » dédié (`*-page.ts`), jamais vers
+  le composant racine `App`. `App` reste une coquille : `<router-outlet>` + menu du
+  bas, aucune logique métier, aucun `inject()` de service.
+- Une nouvelle page = déclarer sa route dans `app.routes.ts`, l'ajouter au menu du
+  bas (`bottom-nav.ts`) si elle doit être accessible directement, et réutiliser les
+  classes partagées de `styles.scss` (`.page`, `.card`, `h1`, `.summary`, `.hint`)
+  plutôt que de les redéfinir dans le SCSS de la page.
+- Le style spécifique à une page (sections, listes, formulaires propres à cette
+  page) reste dans le fichier `.scss` de cette page, pas dans le fichier global.
 
 ### Nommage
 

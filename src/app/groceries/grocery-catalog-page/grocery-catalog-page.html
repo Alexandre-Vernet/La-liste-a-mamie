@@ -1,0 +1,109 @@
+<main class="card">
+  <header>
+    <h1>
+      <svg class="icon" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+        <rect
+          x="4"
+          y="4"
+          width="7"
+          height="7"
+          rx="1.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        />
+        <rect
+          x="13"
+          y="4"
+          width="7"
+          height="7"
+          rx="1.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        />
+        <rect
+          x="4"
+          y="13"
+          width="7"
+          height="7"
+          rx="1.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        />
+        <rect
+          x="13"
+          y="13"
+          width="7"
+          height="7"
+          rx="1.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        />
+      </svg>
+      <span>Tous les produits</span>
+    </h1>
+    <p class="summary">{{ summary() }}</p>
+  </header>
+
+  <div class="search">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8" />
+      <path d="M20 20l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </svg>
+    <input
+      #searchInput
+      placeholder="Chercher un produit…"
+      aria-label="Chercher un produit"
+      [value]="query()"
+      (input)="onQueryInput(searchInput.value)"
+    />
+    @if (query().length > 0) {
+      <button type="button" class="clear" (click)="clearQuery()" aria-label="Effacer la recherche">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path
+            d="M6 6l12 12M18 6L6 18"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+    }
+  </div>
+
+  @if (categories().length > 1) {
+    <nav class="quick-nav" aria-label="Aller à un rayon">
+      @for (category of categories(); track category.slug) {
+        <button type="button" class="quick-link" (click)="scrollToCategory(category.slug)">
+          {{ category.name }}
+        </button>
+      }
+    </nav>
+  }
+
+  @for (category of categories(); track category.slug) {
+    <section class="category" [id]="category.slug">
+      <h2>{{ category.name }}</h2>
+      <div class="products">
+        @for (product of category.products; track product.name) {
+          <button
+            type="button"
+            class="product"
+            [class.added]="product.added"
+            [disabled]="product.added"
+            (click)="add(product.name)"
+          >
+            {{ product.name }}
+          </button>
+        }
+      </div>
+    </section>
+  } @empty {
+    <p class="empty">Aucun produit ne correspond à cette recherche.</p>
+  }
+</main>
+
+<p class="hint">Appuyez sur un produit pour l'ajouter à votre liste</p>

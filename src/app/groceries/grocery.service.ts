@@ -28,6 +28,7 @@ export class GroceryService {
   readonly progress = computed(() =>
     this.total() === 0 ? 0 : Math.round((this.completed() / this.total()) * 100),
   );
+  readonly names = computed(() => new Set(this.items().map((i) => i.name.toLowerCase())));
 
   constructor() {
     effect(() => localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items())));
@@ -84,6 +85,14 @@ export class GroceryService {
 
   remove(id: string): void {
     this.items.update((items) => items.filter((i) => i.id !== id));
+  }
+
+  restore(grocery: Grocery): void {
+    if (this.hasName(grocery.name)) {
+      return;
+    }
+
+    this.items.update((items) => [grocery, ...items]);
   }
 
   clearCompleted(): void {
