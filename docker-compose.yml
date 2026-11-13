@@ -1,0 +1,13 @@
+version: '3'
+services:
+  la-liste-a-mamie-app:
+    image: alexv31/la-liste-a-mamie:app
+    networks:
+      - la-liste-a-mamie-network
+    ports:
+      - "3016:80"
+      - "3017:443"
+
+networks:
+  la-liste-a-mamie-network:
+    driver: bridge
