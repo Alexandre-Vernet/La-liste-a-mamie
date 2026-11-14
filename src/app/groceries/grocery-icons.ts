@@ -481,6 +481,28 @@ const CATEGORY_BY_NORMALIZED_PRODUCT: ReadonlyMap<string, string> = new Map(
   ),
 );
 
+const PRODUCTS_BY_EMOJI: ReadonlyMap<string, readonly string[]> = buildProductsByEmoji();
+
+function buildProductsByEmoji(): ReadonlyMap<string, readonly string[]> {
+  const productsByEmoji = new Map<string, string[]>();
+
+  for (const [name, icon] of PRODUCT_ICONS) {
+    const products = productsByEmoji.get(icon);
+
+    if (products) {
+      products.push(name);
+    } else {
+      productsByEmoji.set(icon, [name]);
+    }
+  }
+
+  return productsByEmoji;
+}
+
+export function productsByEmoji(query: string): readonly string[] {
+  return PRODUCTS_BY_EMOJI.get(query.trim()) ?? [];
+}
+
 export function groceryIcon(name: string): string {
   const normalizedName = normalize(name);
 

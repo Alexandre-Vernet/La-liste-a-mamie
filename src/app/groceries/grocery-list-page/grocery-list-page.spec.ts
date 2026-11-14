@@ -102,4 +102,32 @@ describe('GroceryListPage', () => {
     const service = TestBed.inject(GroceryService);
     expect(service.visible().some((item) => item.name === 'beurre')).toBe(true);
   });
+
+  it('should suggest "fraise" when typing the 🍓 emoji and add it on click', async () => {
+    const fixture = TestBed.createComponent(GroceryListPage);
+    await fixture.whenStable();
+
+    const input: HTMLInputElement = fixture.nativeElement.querySelector(
+      'input[aria-label="Nouvel article"]',
+    );
+    input.value = '🍓';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const suggestionButtons: HTMLButtonElement[] = Array.from(
+      fixture.nativeElement.querySelectorAll('.suggestion'),
+    );
+    const fraiseButton = suggestionButtons.find(
+      (button) => button.textContent?.trim() === 'fraise',
+    );
+    expect(fraiseButton).toBeTruthy();
+
+    fraiseButton!.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const service = TestBed.inject(GroceryService);
+    expect(service.visible().some((item) => item.name === 'fraise')).toBe(true);
+  });
 });

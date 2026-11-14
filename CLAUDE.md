@@ -49,6 +49,22 @@ npx prettier --write "src/**/*.{ts,html,scss}"   # formatage
 
 Toujours lancer `npm test` (et idéalement `npm run build`) après une modification.
 
+## Tests
+
+Chaque fonctionnalité ajoutée ou modifiée doit être complétée par des tests qui la
+couvrent (`*.spec.ts`, Vitest) — pas seulement vérifier que les tests existants
+passent toujours.
+
+- Une fonction pure (dans `grocery-dictionary.ts`, `grocery-icons.ts`…) a son
+  propre fichier de test (ex. `grocery-icons.spec.ts`) qui couvre le cas nominal,
+  les cas limites et les cas de repli.
+- Un comportement utilisateur (ajouter un article, filtrer, rechercher…) a un test
+  au niveau du composant concerné qui simule l'interaction réelle (saisie, clic) et
+  vérifie le résultat observable, à l'image des tests déjà présents dans
+  `grocery-list-page.spec.ts` et `grocery-catalog-page.spec.ts`.
+- Un bug corrigé doit avoir un test qui aurait échoué avant le correctif, pour
+  éviter une régression silencieuse.
+
 ## Documentation (README)
 
 Le [`README.md`](./README.md) présente le projet aux visiteurs du dépôt (texte +

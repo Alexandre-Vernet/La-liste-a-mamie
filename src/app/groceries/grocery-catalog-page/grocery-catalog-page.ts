@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { GroceryService } from '../grocery.service';
 import { GROCERY_CATEGORIES, normalize } from '../grocery-dictionary';
-import { groceryIcon } from '../grocery-icons';
+import { groceryIcon, productsByEmoji } from '../grocery-icons';
 
 interface CatalogProduct {
   readonly name: string;
@@ -32,7 +32,9 @@ export class GroceryCatalogPage {
 
   protected readonly categories = computed<readonly CatalogCategory[]>(() => {
     const addedNames = this.groceryService.names();
-    const normalizedQuery = normalize(this.query());
+    const query = this.query();
+    const normalizedQuery = normalize(query);
+    const emojiMatches = new Set(productsByEmoji(query));
 
     return GROCERY_CATEGORIES.map((category) => {
       const slug = slugify(category.name);
@@ -41,7 +43,9 @@ export class GroceryCatalogPage {
         name: category.name,
         slug,
         products: category.products
-          .filter((product) => normalize(product).includes(normalizedQuery))
+          .filter(
+            (product) => emojiMatches.has(product) || normalize(product).includes(normalizedQuery),
+          )
           .map((product) => ({
             name: product,
             icon: groceryIcon(product),

@@ -41,4 +41,23 @@ describe('GroceryCatalogPage', () => {
     expect(beurreButton!.disabled).toBe(true);
     expect(beurreButton!.classList.contains('added')).toBe(true);
   });
+
+  it('should find "fraise" when searching the 🍓 emoji', async () => {
+    const fixture = TestBed.createComponent(GroceryCatalogPage);
+    await fixture.whenStable();
+
+    const searchInput: HTMLInputElement = fixture.nativeElement.querySelector(
+      'input[aria-label="Chercher un produit"]',
+    );
+    searchInput.value = '🍓';
+    searchInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const buttons: HTMLButtonElement[] = Array.from(
+      fixture.nativeElement.querySelectorAll('.product'),
+    );
+    const labels = buttons.map((button) => button.querySelector('.label')?.textContent?.trim());
+    expect(labels).toEqual(['fraise']);
+  });
 });

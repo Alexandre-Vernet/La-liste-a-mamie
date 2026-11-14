@@ -18,6 +18,9 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
 - **Anti-doublon** : impossible d'ajouter deux fois le même article.
 - **Auto-complétion** : en tapant, l'app suggère des produits à partir d'un
   dictionnaire de 553 produits courants.
+- **Recherche par emoji** : taper ou coller directement un emoji (🍓) suggère le
+  produit correspondant (« fraise »), aussi bien dans la liste que dans le
+  catalogue.
 - **Une icône pour chaque article** : chaque produit affiche un emoji qui lui est
   propre (🥕 pour « carotte », 🧀 pour « fromage »…) ; à défaut d'icône spécifique,
   l'icône du rayon s'affiche, et pour un article personnalisé absent du catalogue,
@@ -39,6 +42,7 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
 <p align="center">
   <img src="docs/screenshots/catalog-search.png" width="260" alt="Recherche dans le catalogue de produits" />
   <img src="docs/screenshots/catalog-non-food.png" width="260" alt="Recherche « chat » : le catalogue couvre aussi le non-alimentaire (rayon Animaux)" />
+  <img src="docs/screenshots/emoji-search.png" width="260" alt="Recherche par emoji : taper 🍓 suggère « fraise »" />
 </p>
 
 ## Stack technique
