@@ -96,7 +96,8 @@
             [disabled]="product.added"
             (click)="add(product.name)"
           >
-            {{ product.name }}
+            <span class="icon" aria-hidden="true">{{ product.icon }}</span>
+            <span class="label">{{ product.name }}</span>
           </button>
         }
       </div>

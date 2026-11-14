@@ -15,6 +15,9 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
 - `src/app/groceries/grocery-dictionary.ts` — catalogue de produits courants
   (`GROCERY_CATEGORIES`), dictionnaire à plat dérivé (`GROCERY_DICTIONARY`) et
   fonction pure de suggestion (auto-complétion de l'ajout).
+- `src/app/groceries/grocery-icons.ts` — fonction pure `groceryIcon(name)` qui associe
+  un emoji à un nom de produit. Voir la règle [Icône de chaque produit](#icône-de-chaque-produit)
+  plus bas.
 - `src/app/groceries/grocery-item/` — composant d'affichage d'un article de la liste.
 - `src/app/groceries/grocery-list-page/` — page « Ma liste » (formulaire d'ajout,
   suggestions, filtres, résumé, confettis). Route `/`.
@@ -45,6 +48,21 @@ npx prettier --write "src/**/*.{ts,html,scss}"   # formatage
 ```
 
 Toujours lancer `npm test` (et idéalement `npm run build`) après une modification.
+
+## Documentation (README)
+
+Le [`README.md`](./README.md) présente le projet aux visiteurs du dépôt (texte +
+captures d'écran). Pour chaque fonctionnalité ajoutée ou modifiée visible par
+l'utilisateur :
+
+- Mettre à jour le texte du README (section « Fonctionnalités » ou autre section
+  pertinente) pour décrire la nouvelle fonctionnalité.
+- Ajouter ou mettre à jour une capture d'écran qui la démontre dans
+  `docs/screenshots/` (captures Playwright pilotées en local, voir la section
+  [Responsive](#responsive) pour la méthode).
+- Ne pas laisser une fonctionnalité livrée sans sa démonstration dans le README :
+  le README doit rester le reflet fidèle de l'état actuel de l'app, pas de son état
+  au moment de sa création.
 
 ## Stack
 
@@ -158,6 +176,22 @@ L'application est installable et fonctionne hors-ligne grâce à
   méthodes.
 - `effect()` est réservé aux effets de bord réels (persistance `localStorage`, déclenchement
   d'une animation…), jamais pour dériver une valeur affichée.
+
+### Icône de chaque produit
+
+- Chaque article affiché (dans la liste comme dans le catalogue) doit toujours
+  montrer une icône — jamais d'absence d'icône. La résolution se fait via
+  `groceryIcon(name)` (`grocery-icons.ts`) en trois niveaux : icône spécifique au
+  produit si elle existe, sinon icône du rayon auquel appartient le produit (pour
+  tout produit du catalogue), sinon l'emoji caddie 🛒 par défaut (uniquement pour un
+  article tapé librement par l'utilisateur et absent du catalogue).
+- Quand un produit est ajouté à `grocery-dictionary.ts`, lui ajouter une icône
+  spécifique dans `grocery-icons.ts` (`PRODUCT_ICONS`) chaque fois qu'un emoji
+  pertinent existe. Ce n'est que si aucun emoji ne représente correctement le
+  produit qu'on le laisse retomber sur l'icône du rayon.
+- Un nouveau rayon dans `GROCERY_CATEGORIES` doit avoir une entrée correspondante
+  dans `CATEGORY_FALLBACK_ICONS`, sans quoi ses produits sans icône spécifique
+  retomberaient à tort sur le caddie 🛒.
 
 ### Visibilité des membres
 

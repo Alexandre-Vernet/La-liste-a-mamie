@@ -4,6 +4,8 @@
   <span class="visually-hidden">Marquer « {{ grocery().name }} » comme acheté</span>
 </label>
 
+<span class="icon" aria-hidden="true">{{ icon() }}</span>
+
 @if (editing()) {
   <input
     #editor

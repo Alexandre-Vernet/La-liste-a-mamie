@@ -1,9 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { GroceryService } from '../grocery.service';
 import { GROCERY_CATEGORIES, normalize } from '../grocery-dictionary';
+import { groceryIcon } from '../grocery-icons';
 
 interface CatalogProduct {
   readonly name: string;
+  readonly icon: string;
   readonly added: boolean;
 }
 
@@ -42,7 +44,8 @@ export class GroceryCatalogPage {
           .filter((product) => normalize(product).includes(normalizedQuery))
           .map((product) => ({
             name: product,
-            added: addedNames.has(product.toLowerCase()),
+            icon: groceryIcon(product),
+            added: addedNames.has(normalize(product)),
           })),
       };
     }).filter((category) => category.products.length > 0);

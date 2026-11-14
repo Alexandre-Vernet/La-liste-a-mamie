@@ -1,5 +1,6 @@
-import { Component, ElementRef, input, output, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, computed, input, output, signal, viewChild } from '@angular/core';
 import { Grocery } from '../grocery.model';
+import { groceryIcon } from '../grocery-icons';
 
 @Component({
   selector: 'app-grocery-item',
@@ -15,6 +16,8 @@ export class GroceryItem {
   readonly incremented = output<void>();
   readonly decremented = output<void>();
   readonly removed = output<void>();
+
+  protected readonly icon = computed(() => groceryIcon(this.grocery().name));
 
   protected readonly editing = signal(false);
   protected readonly leaving = signal(false);

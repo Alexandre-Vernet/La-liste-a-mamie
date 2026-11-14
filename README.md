@@ -1,8 +1,8 @@
 # La liste à mamie 🧺
 
 Une application de liste de courses simple, rapide et agréable à utiliser — avec
-quantités, suggestions de produits, un catalogue de 491 produits classés par rayon,
-et une installation en PWA.
+quantités, suggestions de produits, un catalogue de 553 produits (alimentaire et
+non-alimentaire) classés par rayon, chacun avec son emoji, et une installation en PWA.
 
 <p align="center">
   <img src="docs/screenshots/list-light.png" width="260" alt="Liste de courses, thème clair" />
@@ -17,11 +17,16 @@ et une installation en PWA.
   articles achetés. Les articles cochés descendent automatiquement en bas de liste.
 - **Anti-doublon** : impossible d'ajouter deux fois le même article.
 - **Auto-complétion** : en tapant, l'app suggère des produits à partir d'un
-  dictionnaire de 491 produits courants.
+  dictionnaire de 553 produits courants.
+- **Une icône pour chaque article** : chaque produit affiche un emoji qui lui est
+  propre (🥕 pour « carotte », 🧀 pour « fromage »…) ; à défaut d'icône spécifique,
+  l'icône du rayon s'affiche, et pour un article personnalisé absent du catalogue,
+  l'emoji caddie 🛒 sert de repli — un article n'est donc jamais sans icône.
 - **Catalogue par rayon** (page « Produits ») : tous les produits groupés par
-  catégorie (fruits & légumes, crémerie, boulangerie, viandes & poissons, épicerie
-  salée/sucrée, boissons, surgelés, hygiène…), avec recherche en direct et
-  navigation rapide par rayon.
+  catégorie — fruits & légumes, crémerie, boulangerie, viandes & poissons, épicerie
+  salée/sucrée, boissons, surgelés, hygiène & entretien, mais aussi **bébé, animaux
+  et droguerie & bricolage** pour les courses qui ne sont pas que alimentaires —
+  avec recherche en direct et navigation rapide par rayon.
 - **Annulation de suppression** : supprimer un article affiche un bandeau
   « Annuler » pendant quelques secondes.
 - **PWA installable**, fonctionne hors-ligne, icône et manifeste dédiés.
@@ -33,6 +38,7 @@ et une installation en PWA.
 
 <p align="center">
   <img src="docs/screenshots/catalog-search.png" width="260" alt="Recherche dans le catalogue de produits" />
+  <img src="docs/screenshots/catalog-non-food.png" width="260" alt="Recherche « chat » : le catalogue couvre aussi le non-alimentaire (rayon Animaux)" />
 </p>
 
 ## Stack technique

@@ -26,7 +26,9 @@ describe('GroceryCatalogPage', () => {
     const buttons: HTMLButtonElement[] = Array.from(
       fixture.nativeElement.querySelectorAll('.product'),
     );
-    const beurreButton = buttons.find((button) => button.textContent?.trim() === 'beurre');
+    const beurreButton = buttons.find(
+      (button) => button.querySelector('.label')?.textContent?.trim() === 'beurre',
+    );
     expect(beurreButton).toBeTruthy();
     expect(beurreButton!.disabled).toBe(false);
 

@@ -1,5 +1,6 @@
 import { Injectable, computed, effect, signal } from '@angular/core';
 import { Filter, Grocery } from './grocery.model';
+import { normalize } from './grocery-dictionary';
 
 const STORAGE_KEY = 'groceries';
 
@@ -28,7 +29,7 @@ export class GroceryService {
   readonly progress = computed(() =>
     this.total() === 0 ? 0 : Math.round((this.completed() / this.total()) * 100),
   );
-  readonly names = computed(() => new Set(this.items().map((i) => i.name.toLowerCase())));
+  readonly names = computed(() => new Set(this.items().map((i) => normalize(i.name))));
 
   constructor() {
     effect(() => localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items())));
@@ -112,8 +113,8 @@ export class GroceryService {
   }
 
   private hasName(name: string, excludeId?: string): boolean {
-    const normalized = name.toLowerCase();
-    return this.items().some((i) => i.id !== excludeId && i.name.toLowerCase() === normalized);
+    const normalized = normalize(name);
+    return this.items().some((i) => i.id !== excludeId && normalize(i.name) === normalized);
   }
 
   private load(): Grocery[] {
