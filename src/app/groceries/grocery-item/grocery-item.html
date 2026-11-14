@@ -1,45 +1,83 @@
-<label class="check">
-  <input type="checkbox" [checked]="grocery().done" (change)="toggled.emit()" />
-  <span class="box" aria-hidden="true"></span>
-  <span class="visually-hidden">Marquer « {{ grocery().name }} » comme acheté</span>
-</label>
+<div
+  class="row"
+  [style.transform]="rowTransform()"
+  (touchstart)="onSwipeStart($event)"
+  (touchmove)="onSwipeMove($event)"
+  (touchend)="onSwipeEnd()"
+  (touchcancel)="onSwipeEnd()"
+>
+  <label class="check">
+    <input type="checkbox" [checked]="grocery().done" (change)="toggled.emit()" />
+    <span class="box" aria-hidden="true"></span>
+    <span class="visually-hidden">Marquer « {{ grocery().name }} » comme acheté</span>
+  </label>
 
-<span class="icon" aria-hidden="true">{{ icon() }}</span>
+  <span class="icon" aria-hidden="true">{{ icon() }}</span>
 
-@if (editing()) {
-  <input
-    #editor
-    class="editor"
-    [value]="grocery().name"
-    (keydown.enter)="save(editor.value)"
-    (keydown.escape)="editing.set(false)"
-    (blur)="save(editor.value)"
-  />
-} @else {
-  <span class="name" (dblclick)="startEditing()">{{ grocery().name }}</span>
-}
+  @if (editing()) {
+    <input
+      #editor
+      class="editor"
+      [value]="grocery().name"
+      (keydown.enter)="save(editor.value)"
+      (keydown.escape)="editing.set(false)"
+      (blur)="save(editor.value)"
+    />
+  } @else {
+    <span class="name" (dblclick)="startEditing()">{{ grocery().name }}</span>
+  }
 
-<div class="qty">
-  <button type="button" class="step" (click)="decremented.emit()" aria-label="Diminuer la quantité">
-    −
-  </button>
-  <span class="qty-value">{{ grocery().quantity }}</span>
-  <button
-    type="button"
-    class="step"
-    (click)="incremented.emit()"
-    aria-label="Augmenter la quantité"
-  >
-    +
+  <div class="qty" [class.expanded]="quantityExpanded()">
+    <button
+      type="button"
+      class="qty-badge"
+      (click)="toggleQuantity()"
+      [attr.aria-label]="quantityBadgeLabel()"
+    >
+      ×{{ grocery().quantity }}
+    </button>
+    <button
+      type="button"
+      class="step"
+      (click)="decremented.emit()"
+      aria-label="Diminuer la quantité"
+    >
+      −
+    </button>
+    <span class="qty-value" (click)="toggleQuantity()">{{ grocery().quantity }}</span>
+    <button
+      type="button"
+      class="step"
+      (click)="incremented.emit()"
+      aria-label="Augmenter la quantité"
+    >
+      +
+    </button>
+  </div>
+
+  <button class="remove" type="button" (click)="requestRemove()" aria-label="Supprimer">
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <path
+        d="M6 6l12 12M18 6L6 18"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+      />
+    </svg>
   </button>
 </div>
 
-<button class="remove" type="button" (click)="requestRemove()" aria-label="Supprimer">
-  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+<button
+  class="swipe-delete"
+  type="button"
+  (click)="requestRemove()"
+  [attr.aria-label]="swipeDeleteLabel()"
+>
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
     <path
       d="M6 6l12 12M18 6L6 18"
       stroke="currentColor"
-      stroke-width="1.6"
+      stroke-width="1.8"
       stroke-linecap="round"
     />
   </svg>

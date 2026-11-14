@@ -42,6 +42,12 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
   besoin de vider le cache manuellement pour récupérer les nouveautés.
 - **Responsive** : utilisable du petit téléphone au grand écran, menu de
   navigation mobile en bas d'écran.
+- **Article compact sur tactile** : sur mobile, la quantité devient un badge
+  `×2` qui se déplie au tap (au lieu des boutons `−`/`+` toujours visibles), et
+  la suppression se fait en swipant l'article vers la gauche — de quoi laisser
+  la place au nom du produit même quand il est long (ex. « après-shampoing »).
+  La version desktop ne change pas (steppers et bouton supprimer toujours
+  visibles comme avant).
 - **Thème clair/sombre** : suit le système par défaut, ou se force manuellement via
   le bouton en haut à droite (clair / sombre / auto), préférence mémorisée.
 - Animations et transitions soignées, respectueuses de `prefers-reduced-motion`.
@@ -51,6 +57,8 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
   <img src="docs/screenshots/catalog-non-food.png" width="260" alt="Recherche « chat » : le catalogue couvre aussi le non-alimentaire (rayon Animaux)" />
   <img src="docs/screenshots/emoji-search.png" width="260" alt="Recherche par emoji : taper 🍓 suggère « fraise »" />
   <img src="docs/screenshots/pwa-update-toast.png" width="260" alt="Bandeau de mise à jour de la PWA avec bouton Recharger" />
+  <img src="docs/screenshots/mobile-compact-quantity.png" width="260" alt="Sur mobile, la quantité est un badge ×1 compact qui laisse la place au nom du produit" />
+  <img src="docs/screenshots/mobile-swipe-delete.png" width="260" alt="Sur mobile, swiper un article vers la gauche révèle l'action de suppression" />
 </p>
 
 ## Stack technique

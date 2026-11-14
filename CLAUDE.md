@@ -111,6 +111,27 @@ l'utilisateur :
   d'annuler (snackbar « Annuler » quelques secondes), jamais une suppression silencieuse
   et définitive. Voir `removeGrocery`/`undoRemove` dans `grocery-list-page.ts` et
   `GroceryService.restore()` comme patron à suivre pour toute nouvelle suppression.
+- **Mise en page tactile de `grocery-item`** (uniquement sur tactile, via
+  `@media (hover: none)` — la version desktop ne change pas) : la case à cocher,
+  l'icône et le nom doivent tenir sur une seule ligne, y compris pour un nom long
+  (ex. « après-shampoing »). Deux éléments normalement toujours visibles sont donc
+  remplacés sur tactile pour libérer la largeur du nom :
+  - Le stepper `− 2 +` devient un badge compact `×2` (`.qty-badge`) qui se déplie
+    au tap (`toggleQuantity()`/`quantityExpanded`) ; retaper sur la valeur, ou
+    cliquer n'importe où ailleurs sur la page (`onDocumentClick`, écoute
+    `document:click`), le replie. Un clic à l'intérieur de l'article (ex. sur les
+    boutons `+`/`−` eux-mêmes) ne le replie pas. Sur desktop, le stepper reste
+    toujours visible, inchangé.
+  - Le bouton « Supprimer » toujours visible est remplacé par un swipe vers la
+    gauche sur la ligne (`onSwipeStart`/`onSwipeMove`/`onSwipeEnd`, `.row`
+    translaté via `rowTransform`) : au-delà de `SWIPE_DELETE_THRESHOLD_PX`,
+    l'article est supprimé (réutilise `requestRemove()`, donc toujours annulable
+    via le snackbar ci-dessus) ; sinon la ligne revient à sa position. Le bouton
+    `.swipe-delete` révélé par le swipe reste présent dans le DOM (juste masqué
+    derrière `.row`) pour rester accessible au clavier/lecteur d'écran même sans
+    geste tactile — sur desktop il est entièrement `display: none`.
+  - Un geste majoritairement vertical (`|deltaY| >= |deltaX|`) est ignoré pour ne
+    pas bloquer le défilement de la liste.
 - Thème sombre : piloté entièrement par l'attribut `data-theme` sur `<html>`
   (`ThemeService`), pas par `@media (prefers-color-scheme)` dans le SCSS — ce media
   query ne doit **pas** être réintroduit dans `styles.scss`, il empêcherait de forcer
