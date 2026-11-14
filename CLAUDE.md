@@ -29,6 +29,10 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
   persistée dans `localStorage`, applique l'attribut `data-theme` sur `<html>`.
 - `src/app/theme-toggle/` — bouton flottant (icône soleil/lune/auto) qui fait
   tourner la préférence de thème. Affiché dans la coquille `App`, pas par page.
+- `src/app/pwa-update/pwa-update.service.ts` — détecte les nouvelles versions du
+  service worker et déclenche le rechargement en cas d'état irrécupérable.
+- `src/app/pwa-update-toast/` — bandeau « Nouvelle version disponible » affiché
+  dans la coquille `App` quand `PwaUpdateService` détecte une mise à jour.
 - `src/app/app.ts` / `app.html` / `app.scss` — coquille de l'app : `<router-outlet>`
   + menu du bas. Ne contient aucune logique métier.
 - `src/app/app.routes.ts` — déclaration des routes (une page = un composant).
@@ -162,6 +166,20 @@ L'application est installable et fonctionne hors-ligne grâce à
   (ex. `npx http-server dist/la-liste-a-mamie/browser`).
 - Après tout changement touchant la PWA, vérifier que `ng build` produit bien
   `manifest.webmanifest` et `ngsw-worker.js` dans `dist/la-liste-a-mamie/browser`.
+- **Mise à jour forcée** (`PwaUpdateService`) : le service worker ne vérifie jamais
+  de lui-même qu'une nouvelle version existe tant que l'app reste ouverte — sans
+  ça, un onglet déjà ouvert reste bloqué sur l'ancienne version indéfiniment (seul
+  un vidage manuel du cache la débloquait). `PwaUpdateService` appelle
+  `checkForUpdate()` une fois l'app stable puis toutes les 6h, et affiche
+  `PwaUpdateToast` (bandeau « Nouvelle version disponible ») dès qu'un
+  `VERSION_READY` est reçu ; le bouton du bandeau fait `document.location.reload()`
+  (jamais `activateUpdate()` sans reload, qui peut casser l'app par désynchronisation
+  shell/chunks — voir la doc d'`@angular/service-worker`). Un état `unrecoverable`
+  déclenche un rechargement immédiat, sans attendre d'interaction.
+  Pour tester ce flux : `npm run build`, servir `dist/la-liste-a-mamie/browser`,
+  charger l'app, attendre l'enregistrement du service worker (`registerWhenStable:30000`),
+  puis reconstruire et redéployer par-dessus **sans** fermer l'onglet — le bandeau
+  doit apparaître après la vérification suivante.
 
 ## Règles de base TypeScript
 

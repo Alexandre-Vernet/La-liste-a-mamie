@@ -37,6 +37,9 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
 - **Annulation de suppression** : supprimer un article affiche un bandeau
   « Annuler » pendant quelques secondes.
 - **PWA installable**, fonctionne hors-ligne, icône et manifeste dédiés.
+- **Mise à jour automatique** : dès qu'une nouvelle version est déployée, un
+  bandeau « Nouvelle version disponible » propose de recharger en un clic — plus
+  besoin de vider le cache manuellement pour récupérer les nouveautés.
 - **Responsive** : utilisable du petit téléphone au grand écran, menu de
   navigation mobile en bas d'écran.
 - **Thème clair/sombre** : suit le système par défaut, ou se force manuellement via
@@ -47,6 +50,7 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
   <img src="docs/screenshots/catalog-search.png" width="260" alt="Recherche dans le catalogue de produits" />
   <img src="docs/screenshots/catalog-non-food.png" width="260" alt="Recherche « chat » : le catalogue couvre aussi le non-alimentaire (rayon Animaux)" />
   <img src="docs/screenshots/emoji-search.png" width="260" alt="Recherche par emoji : taper 🍓 suggère « fraise »" />
+  <img src="docs/screenshots/pwa-update-toast.png" width="260" alt="Bandeau de mise à jour de la PWA avec bouton Recharger" />
 </p>
 
 ## Stack technique

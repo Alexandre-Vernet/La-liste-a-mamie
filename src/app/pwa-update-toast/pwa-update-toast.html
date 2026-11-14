@@ -1,0 +1,6 @@
+@if (pwaUpdate.updateReady()) {
+  <div class="update-toast" role="status">
+    <span>Nouvelle version disponible</span>
+    <button type="button" (click)="reload()">Recharger</button>
+  </div>
+}
