@@ -1,4 +1,8 @@
-# La liste à mamie 🧺
+# La liste à mamie
+
+<p align="center">
+  <img src="docs/logo.png" width="120" alt="Logo de La liste à mamie : un sac de courses avec des légumes" />
+</p>
 
 Une application de liste de courses simple, rapide et agréable à utiliser — avec
 quantités, suggestions de produits, un catalogue de 553 produits (alimentaire et

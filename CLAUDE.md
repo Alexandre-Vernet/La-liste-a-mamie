@@ -144,8 +144,13 @@ L'application est installable et fonctionne hors-ligne grâce à
 - `public/manifest.webmanifest` : nom, description, couleurs (`theme_color`,
   `background_color`) et icônes de l'app — toujours cohérents avec l'identité de
   l'app (pas les valeurs par défaut du schematic Angular).
-- `public/icons/` : icônes aux tailles `72` à `512px`, générées à partir du pictogramme
-  du panier utilisé dans l'en-tête, pas le logo Angular par défaut.
+- `public/icons/` : icônes de l'app générées à partir du logo (`docs/logo.png`), pas
+  le logo Angular par défaut — organisées par plateforme (`android/`, `ios/`,
+  `windows/`), chaque fichier référencé par son chemin exact dans
+  `manifest.webmanifest` (`icons`). En cas de régénération de ces icônes, vérifier
+  que chaque entrée de `manifest.webmanifest` pointe vers un fichier qui existe
+  réellement sous ce chemin, avec la taille déclarée (`sizes`) qui correspond aux
+  dimensions réelles du fichier.
 - `src/index.html` : lien vers le manifeste + `<meta name="theme-color">` (light et
   dark, alignés sur les variables de `styles.scss`).
 - `ngsw-config.json` : décrit ce que le service worker met en cache. Si un nouveau
