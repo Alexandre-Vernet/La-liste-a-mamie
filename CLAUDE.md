@@ -36,6 +36,10 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
   service worker et déclenche le rechargement en cas d'état irrécupérable.
 - `src/app/pwa-update-toast/` — bandeau « Nouvelle version disponible » affiché
   dans la coquille `App` quand `PwaUpdateService` détecte une mise à jour.
+- `src/app/app-badge/app-badge.service.ts` — synchronise le badge de l'icône de
+  l'app installée (Badging API) avec `GroceryService.remaining()`. Instancié au
+  démarrage via `provideAppInitializer` dans `app.config.ts`, pas par `App`
+  (voir la section [PWA](#pwa) plus bas).
 - `src/app/app.ts` / `app.html` / `app.scss` — coquille de l'app : `<router-outlet>`
   + menu du bas. Ne contient aucune logique métier.
 - `src/app/app.routes.ts` — déclaration des routes (une page = un composant).
@@ -209,6 +213,17 @@ L'application est installable et fonctionne hors-ligne grâce à
   charger l'app, attendre l'enregistrement du service worker (`registerWhenStable:30000`),
   puis reconstruire et redéployer par-dessus **sans** fermer l'onglet — le bandeau
   doit apparaître après la vérification suivante.
+- **Badge de l'icône** (`AppBadgeService`) : synchronise le badge natif de l'icône
+  de l'app installée avec `GroceryService.remaining()` via l'API `navigator.setAppBadge`/
+  `clearAppBadge` (effet déclenché sur `remaining()`, retire le badge — pas
+  `setAppBadge(0)` — dès que tout est acheté). Ces méthodes sont typées par défaut
+  par TypeScript (`lib.dom.d.ts`) mais ne sont pas implémentées par tous les
+  navigateurs : toujours vérifier `typeof navigator.setAppBadge === 'function'`
+  avant d'appeler l'API (ne jette pas en environnement de test, contrairement à
+  `window.matchMedia`, mais le garde reste nécessaire pour les navigateurs qui ne
+  supportent pas l'API). Le service est instancié au démarrage via
+  `provideAppInitializer` dans `app.config.ts` (pas de composant dédié, rien à
+  afficher) ; `App` n'en a donc pas besoin dans son template.
 
 ## Règles de base TypeScript
 

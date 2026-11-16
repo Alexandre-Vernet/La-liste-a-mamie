@@ -1,7 +1,14 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
+import {
+  ApplicationConfig,
+  inject,
+  isDevMode,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+} from '@angular/core';
 import { provideRouter, withViewTransitions } from '@angular/router';
 import { routes } from './app.routes';
 import { provideServiceWorker } from '@angular/service-worker';
+import { AppBadgeService } from './app-badge/app-badge.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -10,6 +17,9 @@ export const appConfig: ApplicationConfig = {
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
+    }),
+    provideAppInitializer(() => {
+      inject(AppBadgeService);
     }),
   ],
 };

@@ -41,6 +41,9 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
 - **Mise à jour automatique** : dès qu'une nouvelle version est déployée, un
   bandeau « Nouvelle version disponible » propose de recharger en un clic — plus
   besoin de vider le cache manuellement pour récupérer les nouveautés.
+- **Badge sur l'icône de l'app** : une fois installée, l'icône affiche le nombre
+  d'articles restants à acheter, sans avoir besoin d'ouvrir l'app (selon le
+  support du navigateur/OS pour la Badging API).
 - **Responsive** : utilisable du petit téléphone au grand écran, menu de
   navigation mobile en bas d'écran.
 - **Article compact sur tactile** : sur mobile, la quantité devient un badge
