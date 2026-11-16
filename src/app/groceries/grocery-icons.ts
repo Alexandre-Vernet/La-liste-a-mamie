@@ -318,6 +318,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['pâte de fruits', '🍬'],
   ['pépites de chocolat', '🍫'],
   ['petit-beurre', '🍪'],
+  ["Pom'Potes", '🍎'],
   ['porridge', '🥣'],
   ['praliné', '🍫'],
   ['sablés', '🍪'],

@@ -14,7 +14,10 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
   toute la logique métier (ajout, suppression, anti-doublon, quantités, filtres).
 - `src/app/groceries/grocery-dictionary.ts` — catalogue de produits courants
   (`GROCERY_CATEGORIES`), dictionnaire à plat dérivé (`GROCERY_DICTIONARY`) et
-  fonction pure de suggestion (auto-complétion de l'ajout).
+  fonction pure de suggestion (auto-complétion de l'ajout). `suggestGroceryNames`
+  classe les résultats (`matchRank`) pour faire remonter une correspondance exacte
+  ou en début de nom avant une simple correspondance en milieu de nom — ex.
+  chercher « eau » doit faire remonter « eau » avant « poireau » ou « gâteau ».
 - `src/app/groceries/grocery-icons.ts` — fonction pure `groceryIcon(name)` qui associe
   un emoji à un nom de produit. Voir la règle [Icône de chaque produit](#icône-de-chaque-produit)
   plus bas.

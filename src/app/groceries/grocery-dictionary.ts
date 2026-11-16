@@ -425,6 +425,7 @@ export const GROCERY_CATEGORIES: readonly GroceryCategory[] = [
       'pâte de fruits',
       'pépites de chocolat',
       'petit-beurre',
+      "Pom'Potes",
       'porridge',
       'praliné',
       'réglisse',
@@ -625,6 +626,34 @@ export const GROCERY_DICTIONARY: readonly string[] = GROCERY_CATEGORIES.flatMap(
   (category) => category.products,
 );
 
+interface RankedMatch {
+  readonly name: string;
+  readonly rank: number;
+}
+
+// Classe une correspondance pour qu'un nom qui commence par la recherche
+// (voire qui lui est égal) passe devant un nom qui ne fait que la contenir —
+// ex. chercher "eau" doit faire remonter "eau" avant "poireau" ou "gâteau".
+function matchRank(normalizedName: string, normalizedQuery: string): number {
+  if (normalizedName === normalizedQuery) {
+    return 0;
+  }
+
+  if (normalizedName.startsWith(normalizedQuery)) {
+    return 1;
+  }
+
+  const startsWithWord = normalizedName
+    .split(/[ -]/)
+    .some((word) => word.startsWith(normalizedQuery));
+
+  if (startsWithWord) {
+    return 2;
+  }
+
+  return 3;
+}
+
 export function suggestGroceryNames(query: string, max = MAX_SUGGESTIONS): string[] {
   const normalizedQuery = normalize(query);
 
@@ -632,10 +661,22 @@ export function suggestGroceryNames(query: string, max = MAX_SUGGESTIONS): strin
     return [];
   }
 
-  return GROCERY_DICTIONARY.filter((name) => normalize(name).includes(normalizedQuery)).slice(
-    0,
-    max,
-  );
+  const matches: RankedMatch[] = [];
+
+  for (const name of GROCERY_DICTIONARY) {
+    const normalizedName = normalize(name);
+
+    if (!normalizedName.includes(normalizedQuery)) {
+      continue;
+    }
+
+    matches.push({ name, rank: matchRank(normalizedName, normalizedQuery) });
+  }
+
+  return matches
+    .sort((a, b) => a.rank - b.rank)
+    .map((match) => match.name)
+    .slice(0, max);
 }
 
 export function normalize(value: string): string {
@@ -644,6 +685,7 @@ export function normalize(value: string): string {
     .toLocaleLowerCase('fr-FR')
     .replace(/œ/g, 'oe')
     .replace(/æ/g, 'ae')
+    .replace(/['’]/g, '')
     .normalize('NFD')
     .replace(/\p{Diacritic}/gu, '');
 }
