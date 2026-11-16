@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { Grocery } from '../grocery.model';
 import { GroceryService } from '../grocery.service';
 import { GROCERY_CATEGORIES, matchRank, normalize } from '../grocery-dictionary';
 import { groceryIcon, productsByEmoji } from '../grocery-icons';
@@ -7,6 +8,7 @@ interface CatalogProduct {
   readonly name: string;
   readonly icon: string;
   readonly added: boolean;
+  readonly actionLabel: string;
 }
 
 interface CatalogCategory {
@@ -14,6 +16,13 @@ interface CatalogCategory {
   readonly slug: string;
   readonly products: readonly CatalogProduct[];
 }
+
+interface PendingUndo {
+  readonly message: string;
+  readonly grocery: Grocery;
+}
+
+const UNDO_DURATION_MS = 5000;
 
 @Component({
   selector: 'app-grocery-catalog-page',
@@ -29,6 +38,9 @@ export class GroceryCatalogPage {
   );
 
   protected readonly query = signal('');
+  protected readonly pendingUndo = signal<PendingUndo | null>(null);
+
+  private undoTimeout?: ReturnType<typeof setTimeout>;
 
   protected readonly categories = computed<readonly CatalogCategory[]>(() => {
     const addedNames = this.groceryService.names();
@@ -47,11 +59,16 @@ export class GroceryCatalogPage {
       const catalogCategory: CatalogCategory = {
         name: category.name,
         slug: slugify(category.name),
-        products: rankedProducts.map(({ product }) => ({
-          name: product,
-          icon: groceryIcon(product),
-          added: addedNames.has(normalize(product)),
-        })),
+        products: rankedProducts.map(({ product }) => {
+          const added = addedNames.has(normalize(product));
+
+          return {
+            name: product,
+            icon: groceryIcon(product),
+            added,
+            actionLabel: added ? `Retirer ${product} de la liste` : `Ajouter ${product} à la liste`,
+          };
+        }),
       };
 
       const bestRank = rankedProducts.length > 0 ? rankedProducts[0].rank : Infinity;
@@ -95,8 +112,35 @@ export class GroceryCatalogPage {
     this.query.set('');
   }
 
-  protected add(name: string): void {
-    this.groceryService.add(name);
+  protected toggle(name: string): void {
+    if (!this.groceryService.contains(name)) {
+      this.groceryService.add(name);
+      return;
+    }
+
+    const removed = this.groceryService.removeByName(name);
+
+    if (removed) {
+      this.offerUndo(removed);
+    }
+  }
+
+  protected undo(): void {
+    const pending = this.pendingUndo();
+
+    if (!pending) {
+      return;
+    }
+
+    clearTimeout(this.undoTimeout);
+    this.groceryService.restore([pending.grocery]);
+    this.pendingUndo.set(null);
+  }
+
+  private offerUndo(grocery: Grocery): void {
+    clearTimeout(this.undoTimeout);
+    this.pendingUndo.set({ message: `« ${grocery.name} » supprimé`, grocery });
+    this.undoTimeout = setTimeout(() => this.pendingUndo.set(null), UNDO_DURATION_MS);
   }
 
   protected scrollToCategory(slug: string): void {

@@ -91,6 +91,19 @@ export class GroceryService {
     this.items.update((items) => items.filter((i) => i.id !== id));
   }
 
+  /** Retire un article par son nom (ex. reclic sur un produit déjà ajouté) et le renvoie. */
+  removeByName(name: string): Grocery | null {
+    const normalized = normalize(name);
+    const item = this.items().find((i) => normalize(i.name) === normalized);
+
+    if (!item) {
+      return null;
+    }
+
+    this.remove(item.id);
+    return item;
+  }
+
   /**
    * Remet des articles supprimés (annulation). Un article entre-temps réajouté sous le
    * même nom n'est pas dupliqué.

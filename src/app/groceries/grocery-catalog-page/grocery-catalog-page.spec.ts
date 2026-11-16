@@ -30,7 +30,7 @@ describe('GroceryCatalogPage', () => {
       (button) => button.querySelector('.label')?.textContent?.trim() === 'beurre',
     );
     expect(beurreButton).toBeTruthy();
-    expect(beurreButton!.disabled).toBe(false);
+    expect(beurreButton!.getAttribute('aria-pressed')).toBe('false');
 
     beurreButton!.click();
     fixture.detectChanges();
@@ -38,8 +38,45 @@ describe('GroceryCatalogPage', () => {
 
     const service = TestBed.inject(GroceryService);
     expect(service.visible().some((item) => item.name === 'beurre')).toBe(true);
-    expect(beurreButton!.disabled).toBe(true);
     expect(beurreButton!.classList.contains('added')).toBe(true);
+    expect(beurreButton!.getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('should remove an already-added product on a second click, with an undo', async () => {
+    const fixture = TestBed.createComponent(GroceryCatalogPage);
+    await fixture.whenStable();
+
+    const findBeurreButton = (): HTMLButtonElement => {
+      const buttons: HTMLButtonElement[] = Array.from(
+        fixture.nativeElement.querySelectorAll('.product'),
+      );
+      return buttons.find(
+        (button) => button.querySelector('.label')?.textContent?.trim() === 'beurre',
+      )!;
+    };
+
+    findBeurreButton().click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const service = TestBed.inject(GroceryService);
+    expect(service.visible().some((item) => item.name === 'beurre')).toBe(true);
+
+    findBeurreButton().click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(service.visible().some((item) => item.name === 'beurre')).toBe(false);
+    expect(findBeurreButton().classList.contains('added')).toBe(false);
+
+    const undoButton: HTMLButtonElement = fixture.nativeElement.querySelector('.undo-toast button');
+    expect(undoButton).toBeTruthy();
+
+    undoButton.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(service.visible().some((item) => item.name === 'beurre')).toBe(true);
   });
 
   it('should find "fraise" when searching the 🍓 emoji', async () => {

@@ -37,9 +37,11 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
   salée/sucrée, boissons, surgelés, hygiène & entretien, mais aussi **bébé, animaux
   et droguerie & bricolage** pour les courses qui ne sont pas que alimentaires —
   avec recherche en direct (classée par pertinence, comme l'auto-complétion) et
-  navigation rapide par rayon.
-- **Annulation de suppression** : supprimer un article, ou vider les articles
-  achetés, affiche un bandeau « Annuler » pendant quelques secondes.
+  navigation rapide par rayon. Un produit déjà ajouté reste cliquable : un second
+  clic le retire de la liste.
+- **Annulation de suppression** : supprimer un article (depuis la liste ou en le
+  retirant du catalogue), ou vider les articles achetés, affiche un bandeau
+  « Annuler » pendant quelques secondes.
 - **PWA installable**, fonctionne hors-ligne, icône et manifeste dédiés.
 - **Mise à jour automatique** : dès qu'une nouvelle version est déployée, un
   bandeau « Nouvelle version disponible » propose de recharger en un clic — plus
@@ -64,6 +66,7 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
   <img src="docs/screenshots/suggestions.png" width="260" alt="Suggestions d'auto-complétion avec emoji dans un panneau flottant" />
   <img src="docs/screenshots/catalog-search.png" width="260" alt="Recherche dans le catalogue de produits" />
   <img src="docs/screenshots/catalog-search-ranked.png" width="260" alt="Recherche « eau » dans le catalogue : le rayon Boissons et le produit « eau » remontent en premier" />
+  <img src="docs/screenshots/catalog-remove-undo.png" width="260" alt="Recliquer sur un produit déjà ajouté le retire de la liste, avec un bandeau « Annuler »" />
   <img src="docs/screenshots/catalog-non-food.png" width="260" alt="Recherche « chat » : le catalogue couvre aussi le non-alimentaire (rayon Animaux)" />
   <img src="docs/screenshots/emoji-search.png" width="260" alt="Recherche par emoji : taper 🍓 suggère « fraise »" />
   <img src="docs/screenshots/pwa-update-toast.png" width="260" alt="Bandeau de mise à jour de la PWA avec bouton Recharger" />

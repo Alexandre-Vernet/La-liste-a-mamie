@@ -11,7 +11,30 @@ test('ajouter un produit depuis le catalogue et le retrouver dans la liste', asy
     .locator('.product')
     .filter({ has: page.locator('.label', { hasText: /^\s*beurre\s*$/ }) });
   await product.click();
-  await expect(product).toBeDisabled();
+  await expect(product).toHaveAttribute('aria-pressed', 'true');
+
+  await page.getByRole('link', { name: 'Ma liste' }).click();
+  await expect(page.locator('app-grocery-item').filter({ hasText: 'beurre' })).toBeVisible();
+});
+
+test('retirer un produit du catalogue en recliquant dessus, avec annulation', async ({ page }) => {
+  await page.goto('/produits');
+
+  await page.getByLabel('Chercher un produit').fill('beurre');
+  // Repéré par son libellé exact (« petit-beurre » contient aussi « beurre »).
+  const product = page
+    .locator('.product')
+    .filter({ has: page.locator('.label', { hasText: /^\s*beurre\s*$/ }) });
+
+  await product.click();
+  await expect(product).toHaveAttribute('aria-pressed', 'true');
+
+  await product.click();
+  await expect(product).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.getByText('« beurre » supprimé')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Annuler' }).click();
+  await expect(product).toHaveAttribute('aria-pressed', 'true');
 
   await page.getByRole('link', { name: 'Ma liste' }).click();
   await expect(page.locator('app-grocery-item').filter({ hasText: 'beurre' })).toBeVisible();

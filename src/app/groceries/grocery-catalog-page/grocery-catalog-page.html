@@ -93,8 +93,9 @@
             type="button"
             class="product"
             [class.added]="product.added"
-            [disabled]="product.added"
-            (click)="add(product.name)"
+            [attr.aria-pressed]="product.added"
+            [attr.aria-label]="product.actionLabel"
+            (click)="toggle(product.name)"
           >
             <span class="icon" aria-hidden="true">{{ product.icon }}</span>
             <span class="label">{{ product.name }}</span>
@@ -108,3 +109,10 @@
 </main>
 
 <p class="hint">Appuyez sur un produit pour l'ajouter à votre liste</p>
+
+@if (pendingUndo(); as pending) {
+  <div class="undo-toast" role="status">
+    <span>{{ pending.message }}</span>
+    <button type="button" (click)="undo()">Annuler</button>
+  </div>
+}

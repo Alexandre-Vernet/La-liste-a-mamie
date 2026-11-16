@@ -48,6 +48,10 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
   Les rayons et les produits qu'ils contiennent sont triés par pertinence
   (`matchRank`, partagé avec `suggestGroceryNames`) dès qu'une recherche est en
   cours : le rayon contenant la meilleure correspondance remonte en premier.
+  Un produit déjà ajouté (`.added`) reste cliquable : un second clic le retire de
+  la liste (`toggle()` → `GroceryService.removeByName()`), avec la même
+  annulation (`pendingUndo`/`undo()`/`offerUndo()`) que `grocery-list-page.ts` —
+  ne pas remettre `[disabled]` sur ce bouton.
 - `src/app/bottom-nav/` — menu de navigation fixé en bas d'écran (style mobile),
   pour passer d'une page à l'autre.
 - `src/app/theme/theme.service.ts` — thème `light`/`dark` uniquement (pas d'option
