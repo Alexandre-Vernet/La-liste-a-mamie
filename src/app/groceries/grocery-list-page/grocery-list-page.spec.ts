@@ -166,6 +166,94 @@ describe('GroceryListPage', () => {
     expect(titles).toEqual(['Fruits & légumes', 'Acheté']);
   });
 
+  it('should offer to undo "Vider les articles achetés" and restore the cleared items', async () => {
+    const service = TestBed.inject(GroceryService);
+    service.add('carotte');
+    service.add('pomme');
+    service.add('pain');
+    service
+      .visible()
+      .filter((grocery) => grocery.name !== 'carotte')
+      .forEach((grocery) => service.toggle(grocery.id));
+
+    const fixture = TestBed.createComponent(GroceryListPage);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const clearButton: HTMLButtonElement = fixture.nativeElement.querySelector('.clear');
+    clearButton.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(service.total()).toBe(1);
+    const toast: HTMLElement = fixture.nativeElement.querySelector('.undo-toast');
+    expect(toast.textContent).toContain('2 articles achetés retirés');
+
+    toast.querySelector('button')!.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(service.total()).toBe(3);
+    expect(service.completed()).toBe(2);
+    expect(fixture.nativeElement.querySelector('.undo-toast')).toBeNull();
+  });
+
+  it('should use the singular when a single bought item is cleared', async () => {
+    const service = TestBed.inject(GroceryService);
+    service.add('pomme');
+    service.toggle(service.visible()[0].id);
+
+    const fixture = TestBed.createComponent(GroceryListPage);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('.clear').click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.undo-toast')?.textContent).toContain(
+      '1 article acheté retiré',
+    );
+  });
+
+  it('should restore the original quantities when undoing a clear', () => {
+    const service = TestBed.inject(GroceryService);
+    service.add('pomme');
+    const id = service.visible()[0].id;
+    service.increment(id);
+    service.toggle(id);
+
+    const cleared = service.clearCompleted();
+    expect(service.total()).toBe(0);
+
+    service.restore(cleared);
+    expect(service.visible()[0]).toEqual({ id, name: 'pomme', quantity: 2, done: true });
+  });
+
+  it('should not duplicate an item re-added before the undo', () => {
+    const service = TestBed.inject(GroceryService);
+    service.add('pomme');
+    service.toggle(service.visible()[0].id);
+
+    const cleared = service.clearCompleted();
+    service.add('Pomme');
+    service.restore(cleared);
+
+    expect(service.total()).toBe(1);
+  });
+
+  it('should load a corrupted saved list without crashing', async () => {
+    localStorage.setItem('groceries', JSON.stringify([{ name: 'pain' }, null, { id: 'x' }]));
+
+    const fixture = TestBed.createComponent(GroceryListPage);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const service = TestBed.inject(GroceryService);
+    expect(service.total()).toBe(1);
+    expect(fixture.nativeElement.querySelector('app-grocery-item')?.textContent).toContain('pain');
+  });
+
   it('should show the empty message when the current filter has nothing to show', async () => {
     const service = TestBed.inject(GroceryService);
     service.add('carotte');

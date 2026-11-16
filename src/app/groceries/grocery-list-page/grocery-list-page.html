@@ -146,7 +146,7 @@
 
   @if (groceryService.completed() > 0) {
     <footer>
-      <button type="button" class="clear" (click)="groceryService.clearCompleted()">
+      <button type="button" class="clear" (click)="clearCompleted()">
         Vider les articles achetés ({{ groceryService.completed() }})
       </button>
     </footer>
@@ -167,9 +167,9 @@
   }
 </main>
 
-@if (removedGrocery(); as removed) {
+@if (pendingUndo(); as pending) {
   <div class="undo-toast" role="status">
-    <span>« {{ removed.name }} » supprimé</span>
-    <button type="button" (click)="undoRemove()">Annuler</button>
+    <span>{{ pending.message }}</span>
+    <button type="button" (click)="undo()">Annuler</button>
   </div>
 }

@@ -1,9 +1,10 @@
 name: Run tests
 
+# Sur main, ces tests sont lancés par docker-build-deploy.yml (workflow_call), qui
+# n'envoie l'image et ne redéploie que s'ils passent.
 on:
     pull_request:
-    push:
-        branches: [main]
+    workflow_call:
 
 jobs:
     tests:
@@ -26,3 +27,32 @@ jobs:
 
             - name: Build
               run: npm run build
+
+    e2e:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Install Playwright browser
+              run: npx playwright install --with-deps chromium
+
+            - name: Run end-to-end tests
+              run: npm run e2e
+
+            - name: Upload Playwright report
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: playwright-test-results
+                  path: test-results/
+                  retention-days: 7

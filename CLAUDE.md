@@ -12,6 +12,11 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
 - `src/app/groceries/grocery.model.ts` — modèle `Grocery` et type `Filter`.
 - `src/app/groceries/grocery.service.ts` — état de la liste (signaux + `computed`),
   toute la logique métier (ajout, suppression, anti-doublon, quantités, filtres).
+- `src/app/groceries/grocery-storage.ts` — fonction pure `parseStoredGroceries()` :
+  relit la liste du `localStorage` sans lui faire confiance (JSON invalide, ancien
+  format, champ manquant, quantité hors bornes) et la répare ou écarte l'entrée.
+  Porte aussi `MIN_QUANTITY`/`MAX_QUANTITY`. Tout nouveau champ de `Grocery` doit y
+  être relu avec une valeur par défaut, pour ne pas casser les listes déjà enregistrées.
 - `src/app/groceries/grocery-dictionary.ts` — catalogue de produits courants
   (`GROCERY_CATEGORIES`), dictionnaire à plat dérivé (`GROCERY_DICTIONARY`) et
   fonction pure de suggestion (auto-complétion de l'ajout). `suggestGroceryNames`
@@ -67,12 +72,20 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
   styles dans chaque page.
 - `public/manifest.webmanifest`, `public/icons/` — manifeste et icônes de la PWA.
 - `ngsw-config.json` — configuration du service worker (fichiers mis en cache).
+- `Dockerfile` / `nginx.conf` — image de production (build Angular servi par nginx).
+  `nginx.conf` sert `index.html`, `ngsw.json`, `ngsw-worker.js` et le manifeste en
+  `no-cache` (sinon `PwaUpdateService` ne voit pas les nouvelles versions) et les
+  fichiers hashés (`*-XXXXXXXX.js/css`) en cache `immutable` d'un an, avec gzip.
+- `.github/workflows/docker-build-deploy.yml` — sur `main` : lance d'abord les tests
+  (`test.yml`, appelé via `workflow_call`), puis seulement s'ils passent, construit
+  et pousse l'image Docker et redéploie le serveur.
 
 ## Commandes
 
 ```bash
 npm start          # ng serve — lance l'app en local
 npm test           # ng test — lance les tests (Vitest)
+npm run e2e        # playwright test — tests de bout en bout (lance ng serve sur :4300)
 npm run build      # ng build — build de production
 npx prettier --write "src/**/*.{ts,html,scss}"   # formatage
 ```
@@ -94,6 +107,15 @@ passent toujours.
   `grocery-list-page.spec.ts` et `grocery-catalog-page.spec.ts`.
 - Un bug corrigé doit avoir un test qui aurait échoué avant le correctif, pour
   éviter une régression silencieuse.
+- **Tests de bout en bout** (`e2e/*.e2e.ts`, Playwright, config dans
+  `playwright.config.ts`) : ils pilotent la vraie app dans Chromium, en desktop
+  (`Desktop Chrome`) et en mobile tactile (`Pixel 7`). Un parcours utilisateur
+  important (ajouter → cocher → vider → recharger, navigation entre pages, thème,
+  swipe de suppression…) y a son test, en complément des tests de composant. Un
+  comportement propre au tactile (swipe, badge de quantité) se teste dans le projet
+  `mobile` (`test.skip(!isMobile, …)`), et inversement. Repérer les éléments par leur
+  rôle/libellé accessible (`getByRole`, `getByLabel`) avec `exact: true` quand un nom
+  en contient un autre (« beurre » / « petit-beurre »). Lancés en CI par `test.yml`.
 
 ## Documentation (README)
 
@@ -135,8 +157,9 @@ l'utilisateur :
   puces de produits, onglets du menu).
 - Suppression destructive (supprimer un article) : toujours accompagnée d'un moyen
   d'annuler (snackbar « Annuler » quelques secondes), jamais une suppression silencieuse
-  et définitive. Voir `removeGrocery`/`undoRemove` dans `grocery-list-page.ts` et
-  `GroceryService.restore()` comme patron à suivre pour toute nouvelle suppression.
+  et définitive. Voir `removeGrocery`/`clearCompleted` → `offerUndo`/`undo` dans
+  `grocery-list-page.ts` et `GroceryService.restore()` (qui accepte plusieurs
+  articles) comme patron à suivre pour toute nouvelle suppression.
 - **Mise en page tactile de `grocery-item`** (uniquement sur tactile, via
   `@media (hover: none)` — la version desktop ne change pas) : la case à cocher,
   l'icône et le nom doivent tenir sur une seule ligne, y compris pour un nom long

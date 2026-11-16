@@ -38,8 +38,8 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
   et droguerie & bricolage** pour les courses qui ne sont pas que alimentaires —
   avec recherche en direct (classée par pertinence, comme l'auto-complétion) et
   navigation rapide par rayon.
-- **Annulation de suppression** : supprimer un article affiche un bandeau
-  « Annuler » pendant quelques secondes.
+- **Annulation de suppression** : supprimer un article, ou vider les articles
+  achetés, affiche un bandeau « Annuler » pendant quelques secondes.
 - **PWA installable**, fonctionne hors-ligne, icône et manifeste dédiés.
 - **Mise à jour automatique** : dès qu'une nouvelle version est déployée, un
   bandeau « Nouvelle version disponible » propose de recharger en un clic — plus
@@ -89,6 +89,7 @@ Autres commandes utiles :
 
 ```bash
 npm test           # tests unitaires (Vitest)
+npm run e2e        # tests de bout en bout (Playwright, desktop + mobile)
 npm run build      # build de production (dist/la-liste-a-mamie)
 ```
 

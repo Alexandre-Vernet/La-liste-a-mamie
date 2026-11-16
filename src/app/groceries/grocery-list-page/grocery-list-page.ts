@@ -18,6 +18,11 @@ interface Suggestion {
   readonly icon: string;
 }
 
+interface PendingUndo {
+  readonly message: string;
+  readonly groceries: readonly Grocery[];
+}
+
 const CONFETTI_COLORS = ['#a0673f', '#d39a6a', '#b4483c', '#8f877c', '#1f1d1a'];
 const CONFETTI_PIECE_COUNT = 28;
 const CONFETTI_DURATION_MS = 1500;
@@ -47,7 +52,7 @@ export class GroceryListPage {
   protected readonly duplicate = signal(false);
   protected readonly confetti = signal<ConfettiPiece[]>([]);
   protected readonly query = signal('');
-  protected readonly removedGrocery = signal<Grocery | null>(null);
+  protected readonly pendingUndo = signal<PendingUndo | null>(null);
 
   protected readonly suggestions = computed<readonly Suggestion[]>(() => {
     const query = this.query();
@@ -121,21 +126,39 @@ export class GroceryListPage {
   protected removeGrocery(grocery: Grocery): void {
     this.groceryService.remove(grocery.id);
 
-    clearTimeout(this.undoTimeout);
-    this.removedGrocery.set(grocery);
-    this.undoTimeout = setTimeout(() => this.removedGrocery.set(null), UNDO_DURATION_MS);
+    this.offerUndo({ message: `« ${grocery.name} » supprimé`, groceries: [grocery] });
   }
 
-  protected undoRemove(): void {
-    const grocery = this.removedGrocery();
+  protected clearCompleted(): void {
+    const cleared = this.groceryService.clearCompleted();
 
-    if (!grocery) {
+    if (cleared.length === 0) {
+      return;
+    }
+
+    this.offerUndo({ message: this.clearedMessage(cleared.length), groceries: cleared });
+  }
+
+  protected undo(): void {
+    const pending = this.pendingUndo();
+
+    if (!pending) {
       return;
     }
 
     clearTimeout(this.undoTimeout);
-    this.groceryService.restore(grocery);
-    this.removedGrocery.set(null);
+    this.groceryService.restore(pending.groceries);
+    this.pendingUndo.set(null);
+  }
+
+  private offerUndo(pending: PendingUndo): void {
+    clearTimeout(this.undoTimeout);
+    this.pendingUndo.set(pending);
+    this.undoTimeout = setTimeout(() => this.pendingUndo.set(null), UNDO_DURATION_MS);
+  }
+
+  private clearedMessage(count: number): string {
+    return count > 1 ? `${count} articles achetés retirés` : '1 article acheté retiré';
   }
 
   private burstConfetti(): void {

@@ -5,3 +5,6 @@ dist
 .idea
 .vscode
 coverage
+e2e
+test-results
+playwright-report

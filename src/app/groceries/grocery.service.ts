@@ -1,6 +1,7 @@
 import { Injectable, computed, effect, signal } from '@angular/core';
 import { Filter, Grocery } from './grocery.model';
 import { normalize } from './grocery-dictionary';
+import { MAX_QUANTITY, parseStoredGroceries } from './grocery-storage';
 
 const STORAGE_KEY = 'groceries';
 
@@ -32,7 +33,9 @@ export class GroceryService {
   readonly names = computed(() => new Set(this.items().map((i) => normalize(i.name))));
 
   constructor() {
-    effect(() => localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items())));
+    effect(() => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items()));
+    });
   }
 
   add(name: string): boolean {
@@ -70,7 +73,7 @@ export class GroceryService {
   }
 
   increment(id: string): void {
-    this.patch(id, (i) => ({ ...i, quantity: Math.min(i.quantity + 1, 99) }));
+    this.patch(id, (i) => ({ ...i, quantity: Math.min(i.quantity + 1, MAX_QUANTITY) }));
   }
 
   decrement(id: string): void {
@@ -88,16 +91,27 @@ export class GroceryService {
     this.items.update((items) => items.filter((i) => i.id !== id));
   }
 
-  restore(grocery: Grocery): void {
-    if (this.hasName(grocery.name)) {
+  /**
+   * Remet des articles supprimés (annulation). Un article entre-temps réajouté sous le
+   * même nom n'est pas dupliqué.
+   */
+  restore(groceries: readonly Grocery[]): void {
+    const restorable = groceries.filter((grocery) => !this.hasName(grocery.name));
+
+    if (restorable.length === 0) {
       return;
     }
 
-    this.items.update((items) => [grocery, ...items]);
+    this.items.update((items) => [...restorable, ...items]);
   }
 
-  clearCompleted(): void {
+  /** Retire les articles achetés et les renvoie, pour pouvoir annuler. */
+  clearCompleted(): Grocery[] {
+    const cleared = this.items().filter((i) => i.done);
+
     this.items.update((items) => items.filter((i) => !i.done));
+
+    return cleared;
   }
 
   contains(name: string): boolean {
@@ -118,10 +132,6 @@ export class GroceryService {
   }
 
   private load(): Grocery[] {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
-    } catch {
-      return [];
-    }
+    return parseStoredGroceries(localStorage.getItem(STORAGE_KEY));
   }
 }
