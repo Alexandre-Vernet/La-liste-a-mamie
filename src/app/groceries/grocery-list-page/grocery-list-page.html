@@ -41,35 +41,44 @@
     }
   </header>
 
-  <form class="new" [class.shake]="duplicate()" (submit)="$event.preventDefault(); add(newItem)">
-    <input
-      #newItem
-      placeholder="Ajouter un article…"
-      aria-label="Nouvel article"
-      autofocus
-      (input)="onQueryInput(newItem.value)"
-    />
-    <button type="submit" aria-label="Ajouter">
-      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-        <path
-          d="M12 5v14M5 12h14"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-        />
-      </svg>
-    </button>
-  </form>
+  <div class="search">
+    <form class="new" [class.shake]="duplicate()" (submit)="$event.preventDefault(); add(newItem)">
+      <input
+        #newItem
+        placeholder="Ajouter un article…"
+        aria-label="Nouvel article"
+        autofocus
+        (input)="onQueryInput(newItem.value)"
+      />
+      <button type="submit" aria-label="Ajouter">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path
+            d="M12 5v14M5 12h14"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+    </form>
 
-  @if (suggestions().length > 0) {
-    <div class="suggestions">
-      @for (suggestion of suggestions(); track suggestion) {
-        <button type="button" class="suggestion" (click)="selectSuggestion(suggestion, newItem)">
-          {{ suggestion }}
-        </button>
-      }
-    </div>
-  }
+    @if (suggestions().length > 0) {
+      <ul class="suggestions">
+        @for (suggestion of suggestions(); track suggestion.name) {
+          <li>
+            <button
+              type="button"
+              class="suggestion"
+              (click)="selectSuggestion(suggestion.name, newItem)"
+            >
+              <span class="suggestion-icon" aria-hidden="true">{{ suggestion.icon }}</span>
+              <span class="suggestion-name">{{ suggestion.name }}</span>
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </div>
 
   @if (duplicate()) {
     <p class="error">Cet article est déjà dans la liste.</p>

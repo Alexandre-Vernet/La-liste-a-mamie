@@ -23,7 +23,10 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
   plus bas.
 - `src/app/groceries/grocery-item/` — composant d'affichage d'un article de la liste.
 - `src/app/groceries/grocery-list-page/` — page « Ma liste » (formulaire d'ajout,
-  suggestions, filtres, résumé, confettis). Route `/`.
+  suggestions, filtres, résumé, confettis). Route `/`. Les suggestions s'affichent
+  dans un panneau flottant (`.suggestions`, positionné en `absolute` sous le champ
+  via un conteneur `.search` en `position: relative`) avec icône + nom par ligne —
+  pas de pastilles (« badges ») côte à côte : ne pas réintroduire ce pattern.
 - `src/app/groceries/grocery-catalog-page/` — page « Produits » : tous les produits
   du catalogue groupés par catégorie, à ajouter à la liste en un clic. Route `/produits`.
 - `src/app/bottom-nav/` — menu de navigation fixé en bas d'écran (style mobile),

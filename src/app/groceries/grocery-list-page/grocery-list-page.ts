@@ -3,7 +3,7 @@ import { Filter, Grocery } from '../grocery.model';
 import { GroceryService } from '../grocery.service';
 import { GroceryItem } from '../grocery-item/grocery-item';
 import { suggestGroceryNames } from '../grocery-dictionary';
-import { productsByEmoji } from '../grocery-icons';
+import { groceryIcon, productsByEmoji } from '../grocery-icons';
 
 interface ConfettiPiece {
   id: number;
@@ -11,6 +11,11 @@ interface ConfettiPiece {
   delay: number;
   rotate: string;
   color: string;
+}
+
+interface Suggestion {
+  readonly name: string;
+  readonly icon: string;
 }
 
 const CONFETTI_COLORS = ['#a0673f', '#d39a6a', '#b4483c', '#8f877c', '#1f1d1a'];
@@ -44,11 +49,14 @@ export class GroceryListPage {
   protected readonly query = signal('');
   protected readonly removedGrocery = signal<Grocery | null>(null);
 
-  protected readonly suggestions = computed(() => {
+  protected readonly suggestions = computed<readonly Suggestion[]>(() => {
     const query = this.query();
     const emojiMatches = productsByEmoji(query);
     const candidates = emojiMatches.length > 0 ? emojiMatches : suggestGroceryNames(query);
-    return candidates.filter((name) => !this.groceryService.contains(name));
+
+    return candidates
+      .filter((name) => !this.groceryService.contains(name))
+      .map((name) => ({ name, icon: groceryIcon(name) }));
   });
 
   protected readonly summary = computed(() => {

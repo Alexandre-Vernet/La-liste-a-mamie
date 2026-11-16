@@ -91,9 +91,10 @@ describe('GroceryListPage', () => {
       fixture.nativeElement.querySelectorAll('.suggestion'),
     );
     const beurreButton = suggestionButtons.find(
-      (button) => button.textContent?.trim() === 'beurre',
+      (button) => button.querySelector('.suggestion-name')?.textContent?.trim() === 'beurre',
     );
     expect(beurreButton).toBeTruthy();
+    expect(beurreButton!.querySelector('.suggestion-icon')?.textContent?.trim()).toBe('🧈');
 
     beurreButton!.click();
     fixture.detectChanges();
@@ -119,7 +120,7 @@ describe('GroceryListPage', () => {
       fixture.nativeElement.querySelectorAll('.suggestion'),
     );
     const fraiseButton = suggestionButtons.find(
-      (button) => button.textContent?.trim() === 'fraise',
+      (button) => button.querySelector('.suggestion-name')?.textContent?.trim() === 'fraise',
     );
     expect(fraiseButton).toBeTruthy();
 

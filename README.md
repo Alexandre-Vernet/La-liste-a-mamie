@@ -21,8 +21,9 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
   vider les articles achetés. Les articles cochés descendent automatiquement en
   bas de liste.
 - **Anti-doublon** : impossible d'ajouter deux fois le même article.
-- **Auto-complétion** : en tapant, l'app suggère des produits à partir d'un
-  dictionnaire de 553 produits courants.
+- **Auto-complétion** : en tapant, un panneau flottant suggère des produits (avec
+  leur emoji) à partir d'un dictionnaire de 553 produits courants, classés par
+  pertinence (une correspondance exacte ou en début de nom remonte en premier).
 - **Recherche par emoji** : taper ou coller directement un emoji (🍓) suggère le
   produit correspondant (« fraise »), aussi bien dans la liste que dans le
   catalogue.
@@ -57,6 +58,7 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
 - Animations et transitions soignées, respectueuses de `prefers-reduced-motion`.
 
 <p align="center">
+  <img src="docs/screenshots/suggestions.png" width="260" alt="Suggestions d'auto-complétion avec emoji dans un panneau flottant" />
   <img src="docs/screenshots/catalog-search.png" width="260" alt="Recherche dans le catalogue de produits" />
   <img src="docs/screenshots/catalog-non-food.png" width="260" alt="Recherche « chat » : le catalogue couvre aussi le non-alimentaire (rayon Animaux)" />
   <img src="docs/screenshots/emoji-search.png" width="260" alt="Recherche par emoji : taper 🍓 suggère « fraise »" />
