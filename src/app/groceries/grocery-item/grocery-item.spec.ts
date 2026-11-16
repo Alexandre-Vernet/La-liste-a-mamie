@@ -70,6 +70,50 @@ describe('GroceryItem', () => {
     expect(qty.classList.contains('expanded')).toBe(true);
   });
 
+  it('should open the editor on a single click of the name', async () => {
+    const fixture = await createFixture(createGrocery());
+
+    const name: HTMLElement = fixture.nativeElement.querySelector('.name');
+    name.click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.editor')).toBeTruthy();
+  });
+
+  it('should save the new name when pressing Enter', async () => {
+    const fixture = await createFixture(createGrocery());
+    const renamed = vi.fn();
+    fixture.componentInstance.renamed.subscribe(renamed);
+
+    fixture.nativeElement.querySelector('.name').click();
+    fixture.detectChanges();
+
+    const editor: HTMLInputElement = fixture.nativeElement.querySelector('.editor');
+    editor.value = 'shampooing';
+    editor.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    fixture.detectChanges();
+
+    expect(renamed).toHaveBeenCalledWith('shampooing');
+    expect(fixture.nativeElement.querySelector('.editor')).toBeNull();
+  });
+
+  it('should save the new name when clicking elsewhere while editing', async () => {
+    const fixture = await createFixture(createGrocery());
+    const renamed = vi.fn();
+    fixture.componentInstance.renamed.subscribe(renamed);
+
+    fixture.nativeElement.querySelector('.name').click();
+    fixture.detectChanges();
+
+    const editor: HTMLInputElement = fixture.nativeElement.querySelector('.editor');
+    editor.value = 'shampooing';
+    editor.dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+
+    expect(renamed).toHaveBeenCalledWith('shampooing');
+    expect(fixture.nativeElement.querySelector('.editor')).toBeNull();
+  });
+
   it('should remove the article when swiped far enough to the left', async () => {
     const fixture = await createFixture(createGrocery());
     const removed = vi.fn();

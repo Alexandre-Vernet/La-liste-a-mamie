@@ -17,8 +17,9 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
 ## Fonctionnalités
 
 - **Liste de courses** : ajouter un article (avec quantité), le cocher, le renommer
-  (double-clic), ajuster sa quantité, filtrer (tout / à acheter / acheté), vider les
-  articles achetés. Les articles cochés descendent automatiquement en bas de liste.
+  (un clic sur le nom), ajuster sa quantité, filtrer (tout / à acheter / acheté),
+  vider les articles achetés. Les articles cochés descendent automatiquement en
+  bas de liste.
 - **Anti-doublon** : impossible d'ajouter deux fois le même article.
 - **Auto-complétion** : en tapant, l'app suggère des produits à partir d'un
   dictionnaire de 553 produits courants.

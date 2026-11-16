@@ -24,7 +24,7 @@
       (blur)="save(editor.value)"
     />
   } @else {
-    <span class="name" (dblclick)="startEditing()">{{ grocery().name }}</span>
+    <span class="name" (click)="startEditing()">{{ grocery().name }}</span>
   }
 
   <div class="qty" [class.expanded]="quantityExpanded()">

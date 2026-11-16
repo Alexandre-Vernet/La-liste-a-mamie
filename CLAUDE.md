@@ -132,6 +132,11 @@ l'utilisateur :
     geste tactile — sur desktop il est entièrement `display: none`.
   - Un geste majoritairement vertical (`|deltaY| >= |deltaX|`) est ignoré pour ne
     pas bloquer le défilement de la liste.
+- Renommer un article se fait par **un simple clic** sur son nom (`startEditing()`),
+  desktop et tactile confondus — pas de double-clic : sur tactile, le double-tap
+  entre en concurrence avec le zoom natif du navigateur et n'est pas fiable. La
+  saisie se valide avec Entrée (`keydown.enter`) ou en cliquant n'importe où
+  ailleurs sur la page (`(blur)` sur le champ d'édition).
 - Thème sombre : piloté entièrement par l'attribut `data-theme` sur `<html>`
   (`ThemeService`), pas par `@media (prefers-color-scheme)` dans le SCSS — ce media
   query ne doit **pas** être réintroduit dans `styles.scss`, il empêcherait de forcer
