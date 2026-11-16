@@ -15,9 +15,15 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
 - `src/app/groceries/grocery-dictionary.ts` — catalogue de produits courants
   (`GROCERY_CATEGORIES`), dictionnaire à plat dérivé (`GROCERY_DICTIONARY`) et
   fonction pure de suggestion (auto-complétion de l'ajout). `suggestGroceryNames`
-  classe les résultats (`matchRank`) pour faire remonter une correspondance exacte
-  ou en début de nom avant une simple correspondance en milieu de nom — ex.
-  chercher « eau » doit faire remonter « eau » avant « poireau » ou « gâteau ».
+  classe les résultats (`matchRank`, exporté) pour faire remonter une
+  correspondance exacte ou en début de nom avant une simple correspondance en
+  milieu de nom — ex. chercher « eau » doit faire remonter « eau » avant
+  « poireau » ou « gâteau ». `GroceryCatalogPage` réutilise `matchRank` pour trier
+  ses résultats de la même façon (voir plus bas) — ne pas réimplémenter un
+  classement différent côté catalogue. `categoryOf(name)` et
+  `groupGroceriesByCategory(groceries)` dérivent le rayon d'un produit à partir
+  de `GROCERY_CATEGORIES` ; un produit hors catalogue tombe dans le rayon
+  « Autres », toujours en dernier.
 - `src/app/groceries/grocery-icons.ts` — fonction pure `groceryIcon(name)` qui associe
   un emoji à un nom de produit. Voir la règle [Icône de chaque produit](#icône-de-chaque-produit)
   plus bas.
@@ -26,9 +32,17 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
   suggestions, filtres, résumé, confettis). Route `/`. Les suggestions s'affichent
   dans un panneau flottant (`.suggestions`, positionné en `absolute` sous le champ
   via un conteneur `.search` en `position: relative`) avec icône + nom par ligne —
-  pas de pastilles (« badges ») côte à côte : ne pas réintroduire ce pattern.
+  pas de pastilles (« badges ») côte à côte : ne pas réintroduire ce pattern. Les
+  articles « à acheter » (`activeGroups`) sont groupés par rayon dans l'ordre du
+  catalogue — via `groupGroceriesByCategory` — pour suivre un parcours en
+  magasin plutôt que l'ordre d'ajout ; les articles achetés (`completedGroceries`)
+  restent une liste à part, sous un en-tête « Acheté », non groupée (l'ordre n'a
+  plus d'importance une fois l'article dans le panier).
 - `src/app/groceries/grocery-catalog-page/` — page « Produits » : tous les produits
   du catalogue groupés par catégorie, à ajouter à la liste en un clic. Route `/produits`.
+  Les rayons et les produits qu'ils contiennent sont triés par pertinence
+  (`matchRank`, partagé avec `suggestGroceryNames`) dès qu'une recherche est en
+  cours : le rayon contenant la meilleure correspondance remonte en premier.
 - `src/app/bottom-nav/` — menu de navigation fixé en bas d'écran (style mobile),
   pour passer d'une page à l'autre.
 - `src/app/theme/theme.service.ts` — préférence de thème (`system`/`light`/`dark`),

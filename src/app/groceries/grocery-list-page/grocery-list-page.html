@@ -98,24 +98,51 @@
     </nav>
   }
 
-  <ul>
-    @for (grocery of groceryService.visible(); track grocery.id) {
-      <li>
-        <app-grocery-item
-          [grocery]="grocery"
-          (toggled)="groceryService.toggle(grocery.id)"
-          (renamed)="groceryService.rename(grocery.id, $event)"
-          (incremented)="groceryService.increment(grocery.id)"
-          (decremented)="groceryService.decrement(grocery.id)"
-          (removed)="removeGrocery(grocery)"
-        />
-      </li>
-    } @empty {
-      @if (groceryService.total() > 0) {
-        <li class="empty">Aucun article ici.</li>
-      }
-    }
-  </ul>
+  @for (group of activeGroups(); track group.category) {
+    <section class="group">
+      <h2 class="group-title">{{ group.category }}</h2>
+      <ul>
+        @for (grocery of group.groceries; track grocery.id) {
+          <li>
+            <app-grocery-item
+              [grocery]="grocery"
+              (toggled)="groceryService.toggle(grocery.id)"
+              (renamed)="groceryService.rename(grocery.id, $event)"
+              (incremented)="groceryService.increment(grocery.id)"
+              (decremented)="groceryService.decrement(grocery.id)"
+              (removed)="removeGrocery(grocery)"
+            />
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
+  @if (completedGroceries().length > 0) {
+    <section class="group">
+      <h2 class="group-title">Acheté</h2>
+      <ul>
+        @for (grocery of completedGroceries(); track grocery.id) {
+          <li>
+            <app-grocery-item
+              [grocery]="grocery"
+              (toggled)="groceryService.toggle(grocery.id)"
+              (renamed)="groceryService.rename(grocery.id, $event)"
+              (incremented)="groceryService.increment(grocery.id)"
+              (decremented)="groceryService.decrement(grocery.id)"
+              (removed)="removeGrocery(grocery)"
+            />
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
+  @if (
+    groceryService.total() > 0 && activeGroups().length === 0 && completedGroceries().length === 0
+  ) {
+    <p class="empty">Aucun article ici.</p>
+  }
 
   @if (groceryService.completed() > 0) {
     <footer>

@@ -131,4 +131,52 @@ describe('GroceryListPage', () => {
     const service = TestBed.inject(GroceryService);
     expect(service.visible().some((item) => item.name === 'fraise')).toBe(true);
   });
+
+  it('should group articles to buy by rayon, in catalog order', async () => {
+    const service = TestBed.inject(GroceryService);
+    service.add('bière');
+    service.add('carotte');
+    service.add('mon article perso');
+
+    const fixture = TestBed.createComponent(GroceryListPage);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const headings: HTMLElement[] = Array.from(
+      fixture.nativeElement.querySelectorAll('.group-title'),
+    );
+    const titles = headings.map((heading) => heading.textContent?.trim());
+    expect(titles).toEqual(['Fruits & légumes', 'Boissons', 'Autres']);
+  });
+
+  it('should list checked articles under "Acheté", separate from the rayon groups', async () => {
+    const service = TestBed.inject(GroceryService);
+    service.add('carotte');
+    service.add('pomme');
+    service.toggle(service.visible().find((grocery) => grocery.name === 'pomme')!.id);
+
+    const fixture = TestBed.createComponent(GroceryListPage);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const headings: HTMLElement[] = Array.from(
+      fixture.nativeElement.querySelectorAll('.group-title'),
+    );
+    const titles = headings.map((heading) => heading.textContent?.trim());
+    expect(titles).toEqual(['Fruits & légumes', 'Acheté']);
+  });
+
+  it('should show the empty message when the current filter has nothing to show', async () => {
+    const service = TestBed.inject(GroceryService);
+    service.add('carotte');
+    service.filter.set('done');
+
+    const fixture = TestBed.createComponent(GroceryListPage);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.empty')?.textContent).toContain(
+      'Aucun article ici.',
+    );
+  });
 });

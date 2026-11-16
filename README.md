@@ -18,8 +18,9 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
 
 - **Liste de courses** : ajouter un article (avec quantité), le cocher, le renommer
   (un clic sur le nom), ajuster sa quantité, filtrer (tout / à acheter / acheté),
-  vider les articles achetés. Les articles cochés descendent automatiquement en
-  bas de liste.
+  vider les articles achetés. Les articles « à acheter » sont groupés par rayon
+  (dans l'ordre du catalogue) pour suivre facilement un parcours en magasin ; les
+  articles cochés descendent automatiquement dans une section « Acheté » à part.
 - **Anti-doublon** : impossible d'ajouter deux fois le même article.
 - **Auto-complétion** : en tapant, un panneau flottant suggère des produits (avec
   leur emoji) à partir d'un dictionnaire de 553 produits courants, classés par
@@ -35,7 +36,8 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
   catégorie — fruits & légumes, crémerie, boulangerie, viandes & poissons, épicerie
   salée/sucrée, boissons, surgelés, hygiène & entretien, mais aussi **bébé, animaux
   et droguerie & bricolage** pour les courses qui ne sont pas que alimentaires —
-  avec recherche en direct et navigation rapide par rayon.
+  avec recherche en direct (classée par pertinence, comme l'auto-complétion) et
+  navigation rapide par rayon.
 - **Annulation de suppression** : supprimer un article affiche un bandeau
   « Annuler » pendant quelques secondes.
 - **PWA installable**, fonctionne hors-ligne, icône et manifeste dédiés.
@@ -60,6 +62,7 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
 <p align="center">
   <img src="docs/screenshots/suggestions.png" width="260" alt="Suggestions d'auto-complétion avec emoji dans un panneau flottant" />
   <img src="docs/screenshots/catalog-search.png" width="260" alt="Recherche dans le catalogue de produits" />
+  <img src="docs/screenshots/catalog-search-ranked.png" width="260" alt="Recherche « eau » dans le catalogue : le rayon Boissons et le produit « eau » remontent en premier" />
   <img src="docs/screenshots/catalog-non-food.png" width="260" alt="Recherche « chat » : le catalogue couvre aussi le non-alimentaire (rayon Animaux)" />
   <img src="docs/screenshots/emoji-search.png" width="260" alt="Recherche par emoji : taper 🍓 suggère « fraise »" />
   <img src="docs/screenshots/pwa-update-toast.png" width="260" alt="Bandeau de mise à jour de la PWA avec bouton Recharger" />

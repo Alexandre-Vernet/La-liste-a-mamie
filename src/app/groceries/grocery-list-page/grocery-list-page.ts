@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Filter, Grocery } from '../grocery.model';
 import { GroceryService } from '../grocery.service';
 import { GroceryItem } from '../grocery-item/grocery-item';
-import { suggestGroceryNames } from '../grocery-dictionary';
+import { GroceryGroup, groupGroceriesByCategory, suggestGroceryNames } from '../grocery-dictionary';
 import { groceryIcon, productsByEmoji } from '../grocery-icons';
 
 interface ConfettiPiece {
@@ -58,6 +58,14 @@ export class GroceryListPage {
       .filter((name) => !this.groceryService.contains(name))
       .map((name) => ({ name, icon: groceryIcon(name) }));
   });
+
+  protected readonly activeGroups = computed<readonly GroceryGroup[]>(() =>
+    groupGroceriesByCategory(this.groceryService.visible().filter((grocery) => !grocery.done)),
+  );
+
+  protected readonly completedGroceries = computed<readonly Grocery[]>(() =>
+    this.groceryService.visible().filter((grocery) => grocery.done),
+  );
 
   protected readonly summary = computed(() => {
     const total = this.groceryService.total();

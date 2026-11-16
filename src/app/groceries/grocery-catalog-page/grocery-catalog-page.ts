@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { GroceryService } from '../grocery.service';
-import { GROCERY_CATEGORIES, normalize } from '../grocery-dictionary';
+import { GROCERY_CATEGORIES, matchRank, normalize } from '../grocery-dictionary';
 import { groceryIcon, productsByEmoji } from '../grocery-icons';
 
 interface CatalogProduct {
@@ -36,23 +36,33 @@ export class GroceryCatalogPage {
     const normalizedQuery = normalize(query);
     const emojiMatches = new Set(productsByEmoji(query));
 
-    return GROCERY_CATEGORIES.map((category) => {
-      const slug = slugify(category.name);
+    const rankedCategories = GROCERY_CATEGORIES.map((category) => {
+      const rankedProducts = category.products
+        .filter(
+          (product) => emojiMatches.has(product) || normalize(product).includes(normalizedQuery),
+        )
+        .map((product) => ({ product, rank: matchRank(normalize(product), normalizedQuery) }))
+        .sort((a, b) => a.rank - b.rank);
 
-      return {
+      const catalogCategory: CatalogCategory = {
         name: category.name,
-        slug,
-        products: category.products
-          .filter(
-            (product) => emojiMatches.has(product) || normalize(product).includes(normalizedQuery),
-          )
-          .map((product) => ({
-            name: product,
-            icon: groceryIcon(product),
-            added: addedNames.has(normalize(product)),
-          })),
+        slug: slugify(category.name),
+        products: rankedProducts.map(({ product }) => ({
+          name: product,
+          icon: groceryIcon(product),
+          added: addedNames.has(normalize(product)),
+        })),
       };
-    }).filter((category) => category.products.length > 0);
+
+      const bestRank = rankedProducts.length > 0 ? rankedProducts[0].rank : Infinity;
+
+      return { catalogCategory, bestRank };
+    });
+
+    return rankedCategories
+      .filter(({ catalogCategory }) => catalogCategory.products.length > 0)
+      .sort((a, b) => a.bestRank - b.bestRank)
+      .map(({ catalogCategory }) => catalogCategory);
   });
 
   protected readonly resultCount = computed(() =>

@@ -141,7 +141,7 @@
 .filters {
   display: flex;
   gap: 0.25rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
 
   button {
     padding: 0.4rem 0.85rem;
@@ -167,6 +167,19 @@
       transform: scale(0.94);
     }
   }
+}
+
+.group + .group {
+  margin-top: 1.5rem;
+}
+
+.group-title {
+  margin: 0 0 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
 
 ul {

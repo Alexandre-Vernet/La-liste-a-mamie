@@ -60,4 +60,24 @@ describe('GroceryCatalogPage', () => {
     const labels = buttons.map((button) => button.querySelector('.label')?.textContent?.trim());
     expect(labels).toEqual(['fraise']);
   });
+
+  it('should rank an exact match first, in its rayon, when searching', async () => {
+    const fixture = TestBed.createComponent(GroceryCatalogPage);
+    await fixture.whenStable();
+
+    const searchInput: HTMLInputElement = fixture.nativeElement.querySelector(
+      'input[aria-label="Chercher un produit"]',
+    );
+    searchInput.value = 'eau';
+    searchInput.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const headings: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('h2'));
+    expect(headings[0]?.textContent?.trim()).toBe('Boissons');
+
+    const firstCategorySection = headings[0]!.closest('.category');
+    const firstLabel = firstCategorySection?.querySelector('.label')?.textContent?.trim();
+    expect(firstLabel).toBe('eau');
+  });
 });

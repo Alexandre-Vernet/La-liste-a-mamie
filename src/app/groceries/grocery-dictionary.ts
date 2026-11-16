@@ -1,3 +1,5 @@
+import { Grocery } from './grocery.model';
+
 export interface GroceryCategory {
   readonly name: string;
   readonly products: readonly string[];
@@ -634,7 +636,7 @@ interface RankedMatch {
 // Classe une correspondance pour qu'un nom qui commence par la recherche
 // (voire qui lui est égal) passe devant un nom qui ne fait que la contenir —
 // ex. chercher "eau" doit faire remonter "eau" avant "poireau" ou "gâteau".
-function matchRank(normalizedName: string, normalizedQuery: string): number {
+export function matchRank(normalizedName: string, normalizedQuery: string): number {
   if (normalizedName === normalizedQuery) {
     return 0;
   }
@@ -688,4 +690,48 @@ export function normalize(value: string): string {
     .replace(/['’]/g, '')
     .normalize('NFD')
     .replace(/\p{Diacritic}/gu, '');
+}
+
+const UNCATEGORIZED_LABEL = 'Autres';
+
+const CATEGORY_BY_NORMALIZED_PRODUCT: ReadonlyMap<string, string> = new Map(
+  GROCERY_CATEGORIES.flatMap((category) =>
+    category.products.map((product) => [normalize(product), category.name] as const),
+  ),
+);
+
+export function categoryOf(name: string): string | null {
+  return CATEGORY_BY_NORMALIZED_PRODUCT.get(normalize(name)) ?? null;
+}
+
+export interface GroceryGroup {
+  readonly category: string;
+  readonly groceries: readonly Grocery[];
+}
+
+// Groupe par rayon (dans l'ordre des rayons du catalogue, « Autres » en
+// dernier) pour aider à suivre un parcours en magasin plutôt que l'ordre
+// d'ajout — voir GroceryListPage.activeGroups.
+export function groupGroceriesByCategory(groceries: readonly Grocery[]): readonly GroceryGroup[] {
+  const groceriesByCategory = new Map<string, Grocery[]>();
+
+  for (const grocery of groceries) {
+    const category = categoryOf(grocery.name) ?? UNCATEGORIZED_LABEL;
+    const existing = groceriesByCategory.get(category);
+
+    if (existing) {
+      existing.push(grocery);
+    } else {
+      groceriesByCategory.set(category, [grocery]);
+    }
+  }
+
+  const orderedCategories = [
+    ...GROCERY_CATEGORIES.map((category) => category.name),
+    UNCATEGORIZED_LABEL,
+  ];
+
+  return orderedCategories
+    .map((category) => ({ category, groceries: groceriesByCategory.get(category) ?? [] }))
+    .filter((group) => group.groceries.length > 0);
 }

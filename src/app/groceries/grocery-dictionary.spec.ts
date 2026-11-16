@@ -1,4 +1,9 @@
-import { suggestGroceryNames } from './grocery-dictionary';
+import { Grocery } from './grocery.model';
+import { categoryOf, groupGroceriesByCategory, suggestGroceryNames } from './grocery-dictionary';
+
+function createGrocery(overrides: Partial<Grocery> = {}): Grocery {
+  return { id: '1', name: 'pain', quantity: 1, done: false, ...overrides };
+}
 
 describe('suggestGroceryNames', () => {
   it('should suggest "beurre" when typing "beu"', () => {
@@ -36,5 +41,54 @@ describe('suggestGroceryNames', () => {
     expect(results).toContain('pois chiches');
     expect(results).toContain('petit pois');
     expect(results.indexOf('pois chiches')).toBeLessThan(results.indexOf('petit pois'));
+  });
+});
+
+describe('categoryOf', () => {
+  it('should find the category of a known product, ignoring case and accents', () => {
+    expect(categoryOf('Carotte')).toBe('Fruits & légumes');
+    expect(categoryOf('BEURRE')).toBe('Crémerie & œufs');
+  });
+
+  it('should return null for a product absent from the catalog', () => {
+    expect(categoryOf('mon article perso')).toBeNull();
+  });
+});
+
+describe('groupGroceriesByCategory', () => {
+  it('should group groceries by their catalog category', () => {
+    const groups = groupGroceriesByCategory([
+      createGrocery({ id: '1', name: 'carotte' }),
+      createGrocery({ id: '2', name: 'beurre' }),
+      createGrocery({ id: '3', name: 'pomme' }),
+    ]);
+
+    const names = groups.map((group) => group.category);
+    expect(names).toEqual(['Fruits & légumes', 'Crémerie & œufs']);
+
+    const fruitsGroup = groups.find((group) => group.category === 'Fruits & légumes');
+    expect(fruitsGroup?.groceries.map((grocery) => grocery.name)).toEqual(['carotte', 'pomme']);
+  });
+
+  it('should put a product absent from the catalog in "Autres", last', () => {
+    const groups = groupGroceriesByCategory([
+      createGrocery({ id: '1', name: 'mon article perso' }),
+      createGrocery({ id: '2', name: 'carotte' }),
+    ]);
+
+    expect(groups.map((group) => group.category)).toEqual(['Fruits & légumes', 'Autres']);
+  });
+
+  it('should order categories following the catalog order, not the input order', () => {
+    const groups = groupGroceriesByCategory([
+      createGrocery({ id: '1', name: 'bière' }),
+      createGrocery({ id: '2', name: 'carotte' }),
+    ]);
+
+    expect(groups.map((group) => group.category)).toEqual(['Fruits & légumes', 'Boissons']);
+  });
+
+  it('should return an empty array for an empty list', () => {
+    expect(groupGroceriesByCategory([])).toEqual([]);
   });
 });
