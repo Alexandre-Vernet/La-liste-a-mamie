@@ -1,10 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
-import { ThemePreference, ThemeService } from '../theme/theme.service';
+import { Theme, ThemeService } from '../theme/theme.service';
 
-const THEME_LABELS: Record<ThemePreference, string> = {
-  system: 'Thème automatique (suit le système). Appuyer pour passer au thème clair.',
+const THEME_LABELS: Record<Theme, string> = {
   light: 'Thème clair. Appuyer pour passer au thème sombre.',
-  dark: 'Thème sombre. Appuyer pour revenir au thème automatique.',
+  dark: 'Thème sombre. Appuyer pour passer au thème clair.',
 };
 
 @Component({
@@ -13,10 +12,12 @@ const THEME_LABELS: Record<ThemePreference, string> = {
   styleUrl: './theme-toggle.scss',
 })
 export class ThemeToggle {
-  protected readonly themeService = inject(ThemeService);
-  protected readonly label = computed(() => THEME_LABELS[this.themeService.preference()]);
+  private readonly themeService = inject(ThemeService);
+
+  protected readonly theme = this.themeService.theme.asReadonly();
+  protected readonly label = computed(() => THEME_LABELS[this.theme()]);
 
   protected toggle(): void {
-    this.themeService.cyclePreference();
+    this.themeService.toggle();
   }
 }

@@ -55,8 +55,9 @@ non-alimentaire) classés par rayon, chacun avec son emoji, et une installation 
   la place au nom du produit même quand il est long (ex. « après-shampoing »).
   La version desktop ne change pas (steppers et bouton supprimer toujours
   visibles comme avant).
-- **Thème clair/sombre** : suit le système par défaut, ou se force manuellement via
-  le bouton en haut à droite (clair / sombre / auto), préférence mémorisée.
+- **Thème clair/sombre** : le bouton en haut à droite bascule entre thème clair et
+  thème sombre, choix mémorisé. Au tout premier lancement, l'app démarre sur le
+  thème du système.
 - Animations et transitions soignées, respectueuses de `prefers-reduced-motion`.
 
 <p align="center">

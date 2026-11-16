@@ -45,10 +45,12 @@ filtrer la liste et vider les articles achetés. Les données sont persistées d
   cours : le rayon contenant la meilleure correspondance remonte en premier.
 - `src/app/bottom-nav/` — menu de navigation fixé en bas d'écran (style mobile),
   pour passer d'une page à l'autre.
-- `src/app/theme/theme.service.ts` — préférence de thème (`system`/`light`/`dark`),
-  persistée dans `localStorage`, applique l'attribut `data-theme` sur `<html>`.
-- `src/app/theme-toggle/` — bouton flottant (icône soleil/lune/auto) qui fait
-  tourner la préférence de thème. Affiché dans la coquille `App`, pas par page.
+- `src/app/theme/theme.service.ts` — thème `light`/`dark` uniquement (pas d'option
+  « automatique »), persisté dans `localStorage`, applique l'attribut `data-theme`
+  sur `<html>`. Sans thème enregistré (premier lancement), il part du thème système
+  une seule fois, sans le suivre ensuite.
+- `src/app/theme-toggle/` — bouton flottant (icône soleil/lune) qui bascule entre
+  clair et sombre. Affiché dans la coquille `App`, pas par page.
 - `src/app/pwa-update/pwa-update.service.ts` — détecte les nouvelles versions du
   service worker et déclenche le rechargement en cas d'état irrécupérable.
 - `src/app/pwa-update-toast/` — bandeau « Nouvelle version disponible » affiché

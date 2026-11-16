@@ -9,7 +9,8 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script>
       // Applique le thème avant le premier rendu pour éviter un flash du mauvais thème.
-      // La clé 'theme-preference' doit rester synchronisée avec ThemeService.
+      // La clé 'theme-preference' et la logique (thème enregistré, sinon thème système au
+      // premier lancement) doivent rester synchronisées avec ThemeService.
       (function () {
         var stored = localStorage.getItem('theme-preference');
         var dark =
