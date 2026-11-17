@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Filter, Grocery } from '../grocery.model';
 import { GroceryService } from '../grocery.service';
 import { GroceryItem } from '../grocery-item/grocery-item';
@@ -29,10 +29,6 @@ const CONFETTI_PIECE_COUNT = 28;
 const CONFETTI_DURATION_MS = 1500;
 const UNDO_DURATION_MS = 5000;
 
-// Fraction du viewport visuel (donc déjà réduit par le clavier virtuel, contrairement à la
-// fenêtre) que le panneau de suggestions peut occuper, pour ne jamais déborder sous le clavier.
-const SUGGESTIONS_VIEWPORT_RATIO = 0.5;
-
 @Component({
   selector: 'app-grocery-list-page',
   imports: [GroceryItem],
@@ -59,11 +55,6 @@ export class GroceryListPage {
   protected readonly confetti = signal<ConfettiPiece[]>([]);
   protected readonly query = signal('');
   protected readonly pendingUndo = signal<PendingUndo | null>(null);
-  private readonly viewportHeight = signal(this.readViewportHeight());
-
-  protected readonly suggestionsAvailableHeight = computed(
-    () => `${Math.round(this.viewportHeight() * SUGGESTIONS_VIEWPORT_RATIO)}px`,
-  );
 
   protected readonly suggestions = computed<readonly Suggestion[]>(() => {
     const query = this.query();
@@ -111,8 +102,6 @@ export class GroceryListPage {
 
       this.wasComplete = complete;
     });
-
-    this.watchViewportHeight();
   }
 
   protected add(input: HTMLInputElement): void {
@@ -129,19 +118,6 @@ export class GroceryListPage {
   protected onQueryInput(value: string): void {
     this.query.set(value);
     this.duplicate.set(false);
-  }
-
-  protected onSearchFocus(input: HTMLInputElement): void {
-    if (typeof window.matchMedia !== 'function' || !window.matchMedia('(hover: none)').matches) {
-      return;
-    }
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    input.scrollIntoView({
-      behavior: prefersReducedMotion ? 'auto' : 'smooth',
-      block: 'start',
-    });
   }
 
   protected selectSuggestion(name: string, input: HTMLInputElement): void {
@@ -185,25 +161,6 @@ export class GroceryListPage {
 
   private clearedMessage(count: number): string {
     return count > 1 ? `${count} articles achetés retirés` : '1 article acheté retiré';
-  }
-
-  private readViewportHeight(): number {
-    return window.visualViewport?.height ?? window.innerHeight;
-  }
-
-  private watchViewportHeight(): void {
-    const visualViewport = window.visualViewport;
-
-    if (!visualViewport) {
-      return;
-    }
-
-    const updateViewportHeight = (): void => this.viewportHeight.set(visualViewport.height);
-    visualViewport.addEventListener('resize', updateViewportHeight);
-
-    inject(DestroyRef).onDestroy(() =>
-      visualViewport.removeEventListener('resize', updateViewportHeight),
-    );
   }
 
   private burstConfetti(): void {
