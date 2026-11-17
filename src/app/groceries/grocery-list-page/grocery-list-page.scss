@@ -27,6 +27,10 @@
   background: var(--bg);
   transition: border-color 0.2s ease;
 
+  @media (hover: none) {
+    margin-top: 1rem;
+  }
+
   &:focus-within {
     border-color: var(--accent);
   }

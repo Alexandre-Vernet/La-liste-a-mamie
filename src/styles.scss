@@ -101,6 +101,14 @@ body {
   padding: clamp(2rem, 8vh, 6rem) 1rem calc(5.5rem + env(safe-area-inset-bottom, 0px));
 }
 
+// Sur tactile, l'espace au-dessus du champ de recherche est disputé par le clavier virtuel :
+// l'en-tête (date, titre, résumé) est resserré pour laisser le plus de place possible en dessous.
+@media (hover: none) {
+  .page {
+    padding-top: 1.25rem;
+  }
+}
+
 .card {
   position: relative;
   padding: clamp(1.5rem, 5vw, 2.75rem);
@@ -118,6 +126,12 @@ body {
   color: var(--accent);
 }
 
+@media (hover: none) {
+  .date {
+    display: none;
+  }
+}
+
 h1 {
   display: flex;
   align-items: flex-start;
@@ -133,6 +147,18 @@ h1 {
     flex-shrink: 0;
     margin-top: 0.3em;
     color: var(--accent);
+  }
+}
+
+@media (hover: none) {
+  h1 {
+    margin: 0 0 0.15rem;
+    font-size: clamp(1.5rem, 7vw, 1.9rem);
+
+    .icon {
+      width: 1.3em;
+      height: 1.3em;
+    }
   }
 }
 
