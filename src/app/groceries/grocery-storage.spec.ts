@@ -1,4 +1,4 @@
-import { MAX_QUANTITY, parseStoredGroceries } from './grocery-storage';
+import { MAX_NAME_LENGTH, MAX_QUANTITY, parseStoredGroceries } from './grocery-storage';
 
 describe('parseStoredGroceries', () => {
   it('should return valid groceries unchanged', () => {
@@ -63,6 +63,14 @@ describe('parseStoredGroceries', () => {
       3,
       1,
     ]);
+  });
+
+  it('should truncate an overly long name', () => {
+    const stored = JSON.stringify([{ id: 'a', name: 'A'.repeat(MAX_NAME_LENGTH + 50) }]);
+
+    const [grocery] = parseStoredGroceries(stored);
+
+    expect(grocery.name).toBe('A'.repeat(MAX_NAME_LENGTH));
   });
 
   it('should only treat a strict true as done', () => {

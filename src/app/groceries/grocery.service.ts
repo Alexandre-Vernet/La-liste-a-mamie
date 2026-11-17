@@ -1,7 +1,7 @@
 import { Injectable, computed, effect, signal } from '@angular/core';
 import { Filter, Grocery } from './grocery.model';
 import { normalize } from './grocery-dictionary';
-import { MAX_QUANTITY, parseStoredGroceries } from './grocery-storage';
+import { MAX_NAME_LENGTH, MAX_QUANTITY, parseStoredGroceries } from './grocery-storage';
 
 const STORAGE_KEY = 'groceries';
 
@@ -39,7 +39,7 @@ export class GroceryService {
   }
 
   add(name: string): boolean {
-    const trimmed = name.trim();
+    const trimmed = this.clampName(name);
 
     if (!trimmed || this.hasName(trimmed)) {
       return false;
@@ -57,7 +57,7 @@ export class GroceryService {
   }
 
   rename(id: string, name: string): boolean {
-    const trimmed = name.trim();
+    const trimmed = this.clampName(name);
 
     if (!trimmed) {
       this.remove(id);
@@ -129,6 +129,10 @@ export class GroceryService {
 
   contains(name: string): boolean {
     return this.hasName(name.trim());
+  }
+
+  private clampName(name: string): string {
+    return name.trim().slice(0, MAX_NAME_LENGTH);
   }
 
   private sortByDone(items: Grocery[]): Grocery[] {

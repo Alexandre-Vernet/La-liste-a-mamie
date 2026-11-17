@@ -4,6 +4,7 @@ import { GroceryService } from '../grocery.service';
 import { GroceryItem } from '../grocery-item/grocery-item';
 import { GroceryGroup, groupGroceriesByCategory, suggestGroceryNames } from '../grocery-dictionary';
 import { groceryIcon, productsByEmoji } from '../grocery-icons';
+import { MAX_NAME_LENGTH } from '../grocery-storage';
 
 interface ConfettiPiece {
   id: number;
@@ -36,6 +37,7 @@ const UNDO_DURATION_MS = 5000;
 })
 export class GroceryListPage {
   protected readonly groceryService = inject(GroceryService);
+  protected readonly maxNameLength = MAX_NAME_LENGTH;
 
   protected readonly filters: { value: Filter; label: string }[] = [
     { value: 'all', label: 'Tout' },

@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { Grocery } from '../grocery.model';
 import { groceryIcon } from '../grocery-icons';
+import { MAX_NAME_LENGTH } from '../grocery-storage';
 
 const SWIPE_MAX_OFFSET_PX = -88;
 const SWIPE_DELETE_THRESHOLD_PX = -64;
@@ -31,6 +32,8 @@ interface DragOrigin {
 })
 export class GroceryItem {
   private readonly elementRef = inject(ElementRef<HTMLElement>);
+
+  protected readonly maxNameLength = MAX_NAME_LENGTH;
 
   readonly grocery = input.required<Grocery>();
 

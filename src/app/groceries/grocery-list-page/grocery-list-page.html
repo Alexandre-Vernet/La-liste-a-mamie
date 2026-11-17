@@ -48,6 +48,7 @@
         placeholder="Ajouter un article…"
         aria-label="Nouvel article"
         autofocus
+        [attr.maxlength]="maxNameLength"
         (input)="onQueryInput(newItem.value)"
       />
       <button type="submit" aria-label="Ajouter">

@@ -2,6 +2,7 @@ import { Grocery } from './grocery.model';
 
 export const MIN_QUANTITY = 1;
 export const MAX_QUANTITY = 99;
+export const MAX_NAME_LENGTH = 100;
 
 interface StoredGroceryCandidate {
   readonly id?: unknown;
@@ -46,7 +47,7 @@ function toGrocery(entry: unknown): Grocery | null {
   }
 
   const candidate = entry as StoredGroceryCandidate;
-  const name = typeof candidate.name === 'string' ? candidate.name.trim() : '';
+  const name = toName(candidate.name);
 
   if (!name) {
     return null;
@@ -58,6 +59,14 @@ function toGrocery(entry: unknown): Grocery | null {
     quantity: toQuantity(candidate.quantity),
     done: candidate.done === true,
   };
+}
+
+function toName(value: unknown): string {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  return value.trim().slice(0, MAX_NAME_LENGTH);
 }
 
 function toQuantity(value: unknown): number {

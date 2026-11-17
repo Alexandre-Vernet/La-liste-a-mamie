@@ -19,6 +19,7 @@
       #editor
       class="editor"
       [value]="grocery().name"
+      [attr.maxlength]="maxNameLength"
       (keydown.enter)="save(editor.value)"
       (keydown.escape)="editing.set(false)"
       (blur)="save(editor.value)"
