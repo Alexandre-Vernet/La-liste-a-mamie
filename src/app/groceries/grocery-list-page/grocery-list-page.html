@@ -42,7 +42,7 @@
   </header>
 
   <div class="search">
-    <form class="new" [class.shake]="duplicate()" (submit)="$event.preventDefault(); add(newItem)">
+    <form class="new" [class.shake]="duplicate()" (submit)="onSubmit($event, newItem)">
       <input
         #newItem
         placeholder="Ajouter un article…"
@@ -51,6 +51,7 @@
         autofocus
         [attr.maxlength]="maxNameLength"
         (input)="onQueryInput(newItem.value)"
+        (keydown)="onQueryKeydown($event)"
       />
       <button type="submit" aria-label="Ajouter">
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -66,11 +67,12 @@
 
     @if (suggestions().length > 0) {
       <ul class="suggestions">
-        @for (suggestion of suggestions(); track suggestion.name) {
+        @for (suggestion of suggestions(); track suggestion.name; let i = $index) {
           <li>
             <button
               type="button"
               class="suggestion"
+              [class.highlighted]="i === highlightedIndex()"
               (click)="selectSuggestion(suggestion.name, newItem)"
             >
               <span class="suggestion-icon" aria-hidden="true">{{ suggestion.icon }}</span>

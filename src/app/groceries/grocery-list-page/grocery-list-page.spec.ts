@@ -104,6 +104,73 @@ describe('GroceryListPage', () => {
     expect(service.visible().some((item) => item.name === 'beurre')).toBe(true);
   });
 
+  it('should highlight the first suggestion with arrow down and add it on Enter', async () => {
+    const fixture = TestBed.createComponent(GroceryListPage);
+    await fixture.whenStable();
+
+    const input: HTMLInputElement = fixture.nativeElement.querySelector(
+      'input[aria-label="Nouvel article"]',
+    );
+    input.value = 'sala';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    fixture.detectChanges();
+
+    const highlighted: HTMLButtonElement =
+      fixture.nativeElement.querySelector('.suggestion.highlighted');
+    expect(highlighted.querySelector('.suggestion-name')?.textContent?.trim()).toBe('salade');
+
+    const form: HTMLFormElement = fixture.nativeElement.querySelector('form.new');
+    form.dispatchEvent(new Event('submit', { cancelable: true }));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const service = TestBed.inject(GroceryService);
+    expect(service.visible().some((item) => item.name === 'salade')).toBe(true);
+  });
+
+  it('should move the highlight through suggestions with the arrow keys and clear it above the first one', async () => {
+    const fixture = TestBed.createComponent(GroceryListPage);
+    await fixture.whenStable();
+
+    const input: HTMLInputElement = fixture.nativeElement.querySelector(
+      'input[aria-label="Nouvel article"]',
+    );
+    input.value = 'lait';
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const names: (string | undefined)[] = Array.from(
+      fixture.nativeElement.querySelectorAll('.suggestion-name'),
+    ).map((el) => (el as HTMLElement).textContent?.trim());
+    expect(names.length).toBeGreaterThan(1);
+
+    const highlightedName = (): string | undefined =>
+      fixture.nativeElement
+        .querySelector('.suggestion.highlighted .suggestion-name')
+        ?.textContent?.trim();
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    fixture.detectChanges();
+    expect(highlightedName()).toBe(names[0]);
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+    fixture.detectChanges();
+    expect(highlightedName()).toBe(names[1]);
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
+    fixture.detectChanges();
+    expect(highlightedName()).toBe(names[0]);
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.suggestion.highlighted')).toBeNull();
+  });
+
   it('should suggest "fraise" when typing the 🍓 emoji and add it on click', async () => {
     const fixture = TestBed.createComponent(GroceryListPage);
     await fixture.whenStable();

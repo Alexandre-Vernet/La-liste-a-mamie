@@ -55,6 +55,7 @@ export class GroceryListPage {
   protected readonly confetti = signal<ConfettiPiece[]>([]);
   protected readonly query = signal('');
   protected readonly pendingUndo = signal<PendingUndo | null>(null);
+  protected readonly highlightedIndex = signal(-1);
 
   protected readonly suggestions = computed<readonly Suggestion[]>(() => {
     const query = this.query();
@@ -111,6 +112,7 @@ export class GroceryListPage {
     if (added) {
       input.value = '';
       this.query.set('');
+      this.highlightedIndex.set(-1);
       input.focus();
     }
   }
@@ -118,11 +120,46 @@ export class GroceryListPage {
   protected onQueryInput(value: string): void {
     this.query.set(value);
     this.duplicate.set(false);
+    this.highlightedIndex.set(-1);
+  }
+
+  protected onSubmit(event: Event, input: HTMLInputElement): void {
+    event.preventDefault();
+
+    const highlighted = this.suggestions()[this.highlightedIndex()];
+
+    if (highlighted) {
+      this.selectSuggestion(highlighted.name, input);
+      return;
+    }
+
+    this.add(input);
+  }
+
+  protected onQueryKeydown(event: KeyboardEvent): void {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.moveHighlight(1);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.moveHighlight(-1);
+    }
   }
 
   protected selectSuggestion(name: string, input: HTMLInputElement): void {
     input.value = name;
     this.add(input);
+  }
+
+  private moveHighlight(delta: number): void {
+    const count = this.suggestions().length;
+
+    if (count === 0) {
+      return;
+    }
+
+    const next = this.highlightedIndex() + delta;
+    this.highlightedIndex.set(Math.min(Math.max(next, -1), count - 1));
   }
 
   protected removeGrocery(grocery: Grocery): void {
