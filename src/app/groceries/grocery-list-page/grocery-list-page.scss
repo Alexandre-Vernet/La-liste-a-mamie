@@ -87,7 +87,7 @@
   background: var(--surface);
   box-shadow: var(--shadow);
   list-style: none;
-  max-height: 20rem;
+  max-height: min(20rem, var(--suggestions-available, 20rem));
   overflow-y: auto;
   animation: enter 0.15s ease-out;
 }

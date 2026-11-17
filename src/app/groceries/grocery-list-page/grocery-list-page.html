@@ -47,10 +47,10 @@
         #newItem
         placeholder="Ajouter un article…"
         aria-label="Nouvel article"
-        autocomplete="off"
         autofocus
         [attr.maxlength]="maxNameLength"
         (input)="onQueryInput(newItem.value)"
+        (focus)="onSearchFocus(newItem)"
       />
       <button type="submit" aria-label="Ajouter">
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -65,7 +65,7 @@
     </form>
 
     @if (suggestions().length > 0) {
-      <ul class="suggestions">
+      <ul class="suggestions" [style.--suggestions-available]="suggestionsAvailableHeight()">
         @for (suggestion of suggestions(); track suggestion.name) {
           <li>
             <button
