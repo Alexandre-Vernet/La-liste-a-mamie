@@ -91,7 +91,7 @@ export class GroceryService {
     this.items.update((items) => items.filter((i) => i.id !== id));
   }
 
-  /** Retire un article par son nom (ex. reclic sur un produit déjà ajouté) et le renvoie. */
+  /** Removes an item by its name (e.g. re-clicking an already added product) and returns it. */
   removeByName(name: string): Grocery | null {
     const normalized = normalize(name);
     const item = this.items().find((i) => normalize(i.name) === normalized);
@@ -105,8 +105,8 @@ export class GroceryService {
   }
 
   /**
-   * Remet des articles supprimés (annulation). Un article entre-temps réajouté sous le
-   * même nom n'est pas dupliqué.
+   * Restores removed items (undo). An item that was re-added under the
+   * same name in the meantime is not duplicated.
    */
   restore(groceries: readonly Grocery[]): void {
     const restorable = groceries.filter((grocery) => !this.hasName(grocery.name));
@@ -118,7 +118,7 @@ export class GroceryService {
     this.items.update((items) => [...restorable, ...items]);
   }
 
-  /** Retire les articles achetés et les renvoie, pour pouvoir annuler. */
+  /** Removes the purchased items and returns them, so the action can be undone. */
   clearCompleted(): Grocery[] {
     const cleared = this.items().filter((i) => i.done);
 

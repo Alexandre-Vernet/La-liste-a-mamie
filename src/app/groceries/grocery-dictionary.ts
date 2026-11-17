@@ -633,9 +633,9 @@ interface RankedMatch {
   readonly rank: number;
 }
 
-// Classe une correspondance pour qu'un nom qui commence par la recherche
-// (voire qui lui est égal) passe devant un nom qui ne fait que la contenir —
-// ex. chercher "eau" doit faire remonter "eau" avant "poireau" ou "gâteau".
+// Ranks a match so that a name starting with the query (or equal to it)
+// comes before a name that merely contains it —
+// e.g. searching "eau" should rank "eau" above "poireau" or "gâteau".
 export function matchRank(normalizedName: string, normalizedQuery: string): number {
   if (normalizedName === normalizedQuery) {
     return 0;
@@ -709,9 +709,9 @@ export interface GroceryGroup {
   readonly groceries: readonly Grocery[];
 }
 
-// Groupe par rayon (dans l'ordre des rayons du catalogue, « Autres » en
-// dernier) pour aider à suivre un parcours en magasin plutôt que l'ordre
-// d'ajout — voir GroceryListPage.activeGroups.
+// Groups by category (in the catalogue's category order, with "Autres"
+// last) to help follow a path through the store rather than the
+// order items were added — see GroceryListPage.activeGroups.
 export function groupGroceriesByCategory(groceries: readonly Grocery[]): readonly GroceryGroup[] {
   const groceriesByCategory = new Map<string, Grocery[]>();
 

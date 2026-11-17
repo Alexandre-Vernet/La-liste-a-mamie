@@ -174,8 +174,8 @@
   }
 }
 
-// Repli révélé par le swipe sur tactile (voir @media (hover: none) plus bas).
-// Absent du flux visuel sur desktop : la suppression y reste le bouton `.remove`.
+// Backdrop revealed by the touch swipe (see @media (hover: none) below).
+// Not part of the visual flow on desktop: deletion there stays the `.remove` button.
 .swipe-delete {
   position: absolute;
   inset: 0;
@@ -197,8 +197,8 @@
 }
 
 @media (hover: none) {
-  // Sur tactile, le bouton de suppression permanent est remplacé par le swipe
-  // (+ `.swipe-delete` révélé dessous) pour redonner sa place au nom du produit.
+  // On touch, the permanent delete button is replaced by the swipe gesture
+  // (+ `.swipe-delete` revealed underneath) to give the product name back its space.
   .remove {
     display: none;
   }
@@ -217,8 +217,8 @@
     height: 1.875rem;
   }
 
-  // Stepper remplacé par un badge compact (ex. « ×2 ») qui se déplie au tap,
-  // pour libérer la place prise en permanence par les boutons +/-.
+  // Stepper replaced by a compact badge (e.g. "×2") that unfolds on tap,
+  // to free up the space permanently taken by the +/- buttons.
   .qty {
     .qty-badge {
       display: inline-flex;

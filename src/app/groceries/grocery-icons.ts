@@ -18,7 +18,7 @@ const CATEGORY_FALLBACK_ICONS: Readonly<Record<string, string>> = {
 };
 
 const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
-  // Fruits & légumes
+  // Fruits & vegetables
   ['abricot', '🍑'],
   ['ail', '🧄'],
   ['amande', '🥜'],
@@ -83,7 +83,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['salade', '🥬'],
   ['tomate', '🍅'],
 
-  // Crémerie & œufs
+  // Dairy & eggs
   ['babybel', '🧀'],
   ['beaufort', '🧀'],
   ['beurre', '🧈'],
@@ -137,7 +137,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['yaourt grec', '🥣'],
   ['yaourt nature', '🥣'],
 
-  // Boulangerie & pâtisserie
+  // Bakery & pastries
   ['baguette', '🥖'],
   ['baguette tradition', '🥖'],
   ['beignet', '🍩'],
@@ -183,7 +183,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['tarte', '🥧'],
   ['viennoise', '🍞'],
 
-  // Viandes & poissons
+  // Meat & fish
   ['agneau', '🐑'],
   ['bacon', '🥓'],
   ['bavette', '🥩'],
@@ -240,7 +240,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['truite', '🐟'],
   ['veau', '🥩'],
 
-  // Épicerie salée
+  // Savory groceries
   ['ail en poudre', '🧄'],
   ['amandes effilées', '🥜'],
   ['avoine', '🌾'],
@@ -296,7 +296,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['tzatziki', '🥒'],
   ['vermicelles', '🍜'],
 
-  // Épicerie sucrée
+  // Sweet groceries
   ['barre chocolatée', '🍫'],
   ['biscuits apéritifs', '🍪'],
   ['bonbons', '🍬'],
@@ -326,7 +326,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['spéculoos', '🍪'],
   ['sucette', '🍭'],
 
-  // Boissons
+  // Drinks
   ['apéritif', '🍹'],
   ['bière', '🍺'],
   ['café', '☕'],
@@ -366,7 +366,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['vodka', '🥃'],
   ['whisky', '🥃'],
 
-  // Surgelés
+  // Frozen
   ['bâtonnets de poisson', '🐟'],
   ['cordon bleu surgelé', '🍗'],
   ['crevettes surgelées', '🦐'],
@@ -387,7 +387,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['soupe surgelée', '🍲'],
   ['tarte surgelée', '🥧'],
 
-  // Hygiène & entretien
+  // Hygiene & cleaning
   ['ampoule', '💡'],
   ['anti-calcaire', '🧴'],
   ['après-shampoing', '🧴'],
@@ -433,7 +433,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['spray nettoyant', '🧴'],
   ['torchon', '🧺'],
 
-  // Bébé
+  // Baby
   ['biberon', '🍼'],
   ['compote en gourde', '🍼'],
   ['couches', '👶'],
@@ -447,7 +447,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['shampoing bébé', '👶'],
   ['tétine', '🍼'],
 
-  // Animaux
+  // Pets
   ['croquettes pour chat', '🐱'],
   ['croquettes pour chien', '🦴'],
   ['friandises pour chat', '🐱'],
@@ -458,7 +458,7 @@ const PRODUCT_ICONS: ReadonlyArray<readonly [string, string]> = [
   ['pâtée pour chien', '🐶'],
   ['sachets fraîcheur pour chat', '🐱'],
 
-  // Droguerie & bricolage
+  // Hardware & DIY
   ['ampoule led', '💡'],
   ['désinfectant', '🧪'],
   ['étendoir à linge', '🧺'],

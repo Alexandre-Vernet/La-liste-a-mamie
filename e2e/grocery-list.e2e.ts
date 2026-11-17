@@ -11,9 +11,9 @@ function groceryRow(page: Page, name: string): Locator {
   return page.locator('app-grocery-item').filter({ hasText: name });
 }
 
-// Au-delà du seuil de suppression du composant (SWIPE_DELETE_THRESHOLD_PX = -64).
+// Beyond the component's delete threshold (SWIPE_DELETE_THRESHOLD_PX = -64).
 const SWIPE_DISTANCE_PX = 120;
-// En deçà du seuil : la ligne doit revenir à sa place.
+// Below the threshold: the row must snap back to its place.
 const SHORT_SWIPE_DISTANCE_PX = 30;
 const SWIPE_STEPS = 5;
 

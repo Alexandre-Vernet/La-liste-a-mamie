@@ -6,7 +6,7 @@ test('ajouter un produit depuis le catalogue et le retrouver dans la liste', asy
   await expect(page).toHaveURL(/\/produits$/);
 
   await page.getByLabel('Chercher un produit').fill('beurre');
-  // Repéré par son libellé exact (« petit-beurre » contient aussi « beurre »).
+  // Matched by its exact label ("petit-beurre" also contains "beurre").
   const product = page
     .locator('.product')
     .filter({ has: page.locator('.label', { hasText: /^\s*beurre\s*$/ }) });
@@ -21,7 +21,7 @@ test('retirer un produit du catalogue en recliquant dessus, avec annulation', as
   await page.goto('/produits');
 
   await page.getByLabel('Chercher un produit').fill('beurre');
-  // Repéré par son libellé exact (« petit-beurre » contient aussi « beurre »).
+  // Matched by its exact label ("petit-beurre" also contains "beurre").
   const product = page
     .locator('.product')
     .filter({ has: page.locator('.label', { hasText: /^\s*beurre\s*$/ }) });

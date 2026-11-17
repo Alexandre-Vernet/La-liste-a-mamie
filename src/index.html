@@ -8,9 +8,9 @@
     <meta name="theme-color" content="#f6f3ee" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <script>
-      // Applique le thème avant le premier rendu pour éviter un flash du mauvais thème.
-      // La clé 'theme-preference' et la logique (thème enregistré, sinon thème système au
-      // premier lancement) doivent rester synchronisées avec ThemeService.
+      // Applies the theme before the first render to avoid a flash of the wrong theme.
+      // The 'theme-preference' key and the logic (stored theme, otherwise system theme on
+      // first launch) must stay in sync with ThemeService.
       (function () {
         var stored = localStorage.getItem('theme-preference');
         var dark =

@@ -12,9 +12,9 @@ interface StoredGroceryCandidate {
 }
 
 /**
- * Relit la liste enregistrée dans le localStorage sans lui faire confiance : la donnée
- * peut venir d'une ancienne version de l'app (champ manquant) ou avoir été corrompue.
- * Une entrée sans nom exploitable est écartée ; les autres champs sont réparés.
+ * Reads back the list stored in localStorage without trusting it: the data
+ * may come from an older version of the app (missing field) or have been corrupted.
+ * An entry without a usable name is discarded; the other fields are repaired.
  */
 export function parseStoredGroceries(raw: string | null): Grocery[] {
   const parsed = safeJsonParse(raw);

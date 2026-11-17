@@ -2,7 +2,7 @@ import { Injectable, effect, signal } from '@angular/core';
 
 export type Theme = 'light' | 'dark';
 
-// Doit rester synchronisée avec la clé utilisée dans le script anti-flash de index.html.
+// Must stay in sync with the key used in the anti-flash script in index.html.
 const STORAGE_KEY = 'theme-preference';
 const DARK_MEDIA_QUERY = '(prefers-color-scheme: dark)';
 const THEME_COLORS: Record<Theme, string> = {
@@ -35,8 +35,8 @@ export class ThemeService {
       ?.setAttribute('content', THEME_COLORS[theme]);
   }
 
-  // Sans choix enregistré (premier lancement, ou ancienne valeur « system »), on part du
-  // thème du système ; ensuite seul le choix explicite de l'utilisateur compte.
+  // With no stored choice (first launch, or an old "system" value), start from the
+  // system theme; after that, only the user's explicit choice matters.
   private load(): Theme {
     const stored = localStorage.getItem(STORAGE_KEY);
 
