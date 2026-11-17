@@ -151,11 +151,17 @@ h1 {
 }
 
 @media (hover: none) {
+  header {
+    --title-font-size: clamp(1.5rem, 7vw, 1.9rem);
+  }
+
   h1 {
+    align-items: center;
     margin: 0 0 0.15rem;
-    font-size: clamp(1.5rem, 7vw, 1.9rem);
+    font-size: var(--title-font-size);
 
     .icon {
+      margin-top: 0;
       width: 1.3em;
       height: 1.3em;
     }
@@ -165,6 +171,14 @@ h1 {
 .summary {
   margin: 0;
   color: var(--muted);
+}
+
+@media (hover: none) {
+  // Aligne le texte sous le titre (et non sous l'icône), puisque l'icône est désormais
+  // centrée verticalement à côté du titre plutôt qu'alignée avec sa première ligne.
+  .summary {
+    margin-left: calc(1.3 * var(--title-font-size) + 0.55rem);
+  }
 }
 
 .hint {
