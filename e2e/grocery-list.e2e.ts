@@ -52,8 +52,12 @@ test('ajouter, cocher, vider puis annuler, et tout retrouver après rechargement
   await addGrocery(page, 'carotte');
   await expect(page.locator('.summary')).toHaveText('3 articles restants');
 
-  await page.getByLabel('Marquer « lait » comme acheté').check({ force: true });
-  await page.getByLabel('Marquer « pain » comme acheté').check({ force: true });
+  // `.click()` rather than `.check()`: checking an item moves it from the active `@for` block
+  // to the completed one, so the checkbox node itself is destroyed as a side effect of the
+  // click — `.check()`'s built-in "did it become checked" verification would race that DOM
+  // move. The assertions below already verify the outcome.
+  await page.getByLabel('Marquer « lait » comme acheté').click({ force: true });
+  await page.getByLabel('Marquer « pain » comme acheté').click({ force: true });
   await expect(page.locator('.summary')).toHaveText('1 article restant');
 
   await page.getByRole('button', { name: 'Vider les articles achetés (2)' }).click();
