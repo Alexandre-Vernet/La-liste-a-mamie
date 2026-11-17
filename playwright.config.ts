@@ -15,10 +15,10 @@ export default defineConfig({
     baseURL: BASE_URL,
     locale: 'fr-FR',
     trace: 'retain-on-failure',
-    // Désactive le smooth scroll et les transitions CSS (voir le filet `prefers-reduced-motion`
-    // de styles.scss) : sans ça, les clics `force: true` sur des éléments masqués par du style
-    // (ex. la checkbox de grocery-item) peuvent survenir pendant une animation de défilement,
-    // ratant leur cible.
+    // Disables smooth scroll and CSS transitions (see the `prefers-reduced-motion` safety net
+    // in styles.scss): without this, `force: true` clicks on elements hidden by style
+    // (e.g. the grocery-item checkbox) can happen during a scroll animation,
+    // missing their target.
     reducedMotion: 'reduce',
   },
   projects: [
